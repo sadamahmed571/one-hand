@@ -64,8 +64,8 @@ function getDefaults() {
         ],
         wallets: [
             { id: 1, name: 'كريمي - أم فلوس', account: '3170928457', image: 'img/mfloos.jpg', gradient: 'linear-gradient(135deg, #FF9800, #F57C00)', sort: 0 },
-            { id: 2, name: 'محفظة جيب - Jaib', account: '774261416', image: 'img/jeep.jpg', gradient: 'linear-gradient(135deg, #4CAF50, #2E7D73)', sort: 1 },
-            { id: 3, name: 'محفظة فلوسك - Floosak', account: '774261416', image: 'img/floosk.jpg', gradient: 'linear-gradient(135deg, #C9A84C, #8B6914)', sort: 2 },
+            { id: 2, name: 'محفظة جيب', account: '774261416', image: 'img/jeep.jpg', gradient: 'linear-gradient(135deg, #4CAF50, #2E7D73)', sort: 1 },
+            { id: 3, name: 'محفظة فلوسك', account: '774261416', image: 'img/floosk.jpg', gradient: 'linear-gradient(135deg, #C9A84C, #8B6914)', sort: 2 },
         ],
         stats: { orphans: 142, families: 89, governorates: 4, meatKg: 712 },
         settings: {

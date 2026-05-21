@@ -1400,7 +1400,7 @@ body {
     }
     
     .gift-type-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 6px;
     }
     .gift-type-card {
@@ -1463,7 +1463,7 @@ body {
 <div class="cert-overlay" id="inviteOverlay">
     <div class="cert-modal">
         <button class="cert-close" onclick="closeInvite()">×</button>
-        <h3><i class="ml-1" style="color:#b8a673;" data-lucide="heart"></i> شارك الأجر وقدم دعوة تبرع</h3>
+        <h3 style="font-size:19px;"><i class="ml-1" style="color:#b8a673;" data-lucide="heart"></i> شارك الأجر وقدم دعوة تبرع</h3>
         <p class="cert-sub">اختر الطريقة المناسبة لك لدعوة من تحب للمساهمة في عمل الخير</p>
 
         <div class="invite-toggle-group mb-3">
@@ -1500,7 +1500,7 @@ body {
         </div>
 
         <div id="inviteImageContent" style="display:none;">
-            <div id="inviteImagePreview" class="cert-preview" style="height:180px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1B5E52,#2E7D73);color:#ded4bb;font-weight:700;font-size:1rem;text-align:center;padding:10px;">
+            <div id="inviteImagePreview" class="cert-preview" style="aspect-ratio: 8/5; width: 100%; height: auto; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#1B5E52,#2E7D73); color:#ded4bb; font-weight:700; font-size:1rem; text-align:center; padding:10px;">
                 جاري تصميم بطاقتك الخاصة بدقة عالية، يرجى الانتظار لحظات...
             </div>
             <div class="share-social-row">
@@ -1747,51 +1747,62 @@ body {
     </div> <!-- الإغلاق الصحيح لحاوية stories-row -->
 </section>
 
-    <!-- Quick Form (Toggle Widget) -->
-    <section class="quick-form reveal" id="quickFormSection">
-        <div id="quickFormToggle" onclick="toggleQuickForm()" style="cursor:pointer;">
-            <p class="quick-form-title" style="font-family: 'Cairo', sans-serif;"><i class="ml-1" data-lucide="hand-heart"></i> أريد التبرع</p>
-            <p class="quick-form-sub">سنقوم بالتواصل معك مباشرة لإتمام مساهمتك</p>
-        </div>
-        <div id="quickFormContent" style="display:none;">
-            <input type="hidden" id="formShares" value="1">
-            <div class="shares-grid">
-                <div class="shares-card active" data-shares="1" onclick="selectShares(this, '1')">
-                    <div class="shares-number">1</div>
-                    <div class="shares-unit">سهم</div>
-                    <div class="shares-price">1,000 ريال</div>
-                </div>
-                <div class="shares-card" data-shares="2" onclick="selectShares(this, '2')">
-                    <div class="shares-number">2</div>
-                    <div class="shares-unit">سهم</div>
-                    <div class="shares-price">2,000 ريال</div>
-                </div>
-                <div class="shares-card" data-shares="3" onclick="selectShares(this, '3')">
-                    <div class="shares-number">3</div>
-                    <div class="shares-unit">أسهم</div>
-                    <div class="shares-price">3,000 ريال</div>
-                </div>
-                <div class="shares-card" data-shares="5" onclick="selectShares(this, '5')">
-                    <div class="shares-number">5</div>
-                    <div class="shares-unit">أسهم</div>
-                    <div class="shares-price">5,000 ريال</div>
-                </div>
-                <div class="shares-card" data-shares="10" onclick="selectShares(this, '10')">
-                    <div class="shares-number">10</div>
-                    <div class="shares-unit">أسهم</div>
-                    <div class="shares-price">10,000 ريال</div>
-                </div>
+   <!-- Quick Form (Toggle Widget) -->
+<section class="quick-form reveal" id="quickFormSection">
+    <div id="quickFormToggle" onclick="toggleQuickForm()" style="cursor:pointer;">
+        <p class="quick-form-title" style="font-family: 'Cairo', sans-serif;"><i class="ml-1" data-lucide="hand-heart"></i> أريد التبرع</p>
+        <p class="quick-form-sub">سنقوم بالتواصل معك مباشرة لإتمام مساهمتك</p>
+    </div>
+    
+    <div id="quickFormContent" style="display:none;">
+        <input type="hidden" id="formShares" value="1">
+        
+        <!-- شبكة الأسهم: مغلقة ومكتملة بشكل سليم بدون حشر حقول داخلها -->
+        <div class="shares-grid">
+            <div class="shares-card active" data-shares="1" onclick="selectShares(this, '1')">
+                <div class="shares-number">1</div>
+                <div class="shares-unit">سهم</div>
+                <div class="shares-price">1,000 ريال</div>
             </div>
-            <div class="form-grid">
-                <input type="text" class="form-input" id="formName" placeholder="الاسم (اختياري)">
-                <input type="tel" class="form-input" id="formPhone" placeholder="رقم الهاتف (اختياري)" dir="ltr">
+            <div class="shares-card" data-shares="2" onclick="selectShares(this, '2')">
+                <div class="shares-number">2</div>
+                <div class="shares-unit">سهم</div>
+                <div class="shares-price">2,000 ريال</div>
             </div>
-            <button class="form-btn" onclick="submitQuickForm()">
-                <i data-lucide="send"></i>
-                أرسل طلب التبرع
-            </button>
+            <div class="shares-card" data-shares="3" onclick="selectShares(this, '3')">
+                <div class="shares-number">3</div>
+                <div class="shares-unit">أسهم</div>
+                <div class="shares-price">3,000 ريال</div>
+            </div>
+            <div class="shares-card" data-shares="5" onclick="selectShares(this, '5')">
+                <div class="shares-number">5</div>
+                <div class="shares-unit">أسهم</div>
+                <div class="shares-price">5,000 ريال</div>
+            </div>
+            <div class="shares-card" data-shares="10" onclick="selectShares(this, '10')">
+                <div class="shares-number">10</div>
+                <div class="shares-unit">أسهم</div>
+                <div class="shares-price">10,000 ريال</div>
+            </div>
         </div>
-    </section>
+
+        <!-- حقول البيانات: مرتبة بالأسفل بشكل مستقل وبدون تكرار المعرفات (IDs) -->
+        <div class="form-grid">
+            <input type="text" class="form-input" id="formName" placeholder="الاسم (اختياري)">
+            <input type="tel" class="form-input" id="formPhone" placeholder="رقم الجوال (اختياري)" dir="ltr">
+        </div>
+        
+        <!-- إضافة حقل المحافظة الجديد بشكل متناسق أسفل الحقول السابقة -->
+        <div class="mb-3" style="margin-top: 15px;">
+            <input type="text" class="form-input" id="formGovernorate" placeholder="المحافظة (اختياري)" maxlength="70">
+        </div>
+
+        <button class="form-btn" onclick="submitQuickForm()">
+            <i data-lucide="send"></i>
+            أرسل طلب التبرع
+        </button>
+    </div>
+</section>
 
     <!-- Gift Donation -->
     <section class="dense-card p-5 reveal" id="giftSection">
@@ -1838,17 +1849,33 @@ body {
                     </div>
                 </div>
             </div>
-            <div class="form-grid">
-                <input type="text" class="form-input" id="giftRecipientName" placeholder="مثال: المغفور له بإذن الله أحمد الخطيب" maxlength="70">
-                <input type="tel" class="form-input" id="recipientPhone" placeholder="9665xxxxxxxxx+" dir="ltr">
+            <div class="form-grid mb-3">
+                <div>
+                    <label class="block mb-2" style="font-family: 'Tajawal', sans-serif; color: #1B5E52; font-weight: 700; font-size: 0.88rem;">اسم المهدى إليه:</label>
+                    <input type="text" class="form-input" id="giftRecipientName" placeholder="مثال: المغفور له بإذن الله أحمد الخطيب" maxlength="70">
+                </div>
+                <div>
+                    <label class="block mb-2" style="font-family: 'Tajawal', sans-serif; color: #1B5E52; font-weight: 700; font-size: 0.88rem;">المحافظة (اختياري):</label>
+                    <input type="text" class="form-input" id="giftGovernorate" placeholder="مثال: صنعاء" maxlength="70">
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                <div>
+                    <label class="block mb-2" style="font-family: 'Tajawal', sans-serif; color: #1B5E52; font-weight: 700; font-size: 0.88rem;">عدد الأسهم:</label>
+                    <input type="number" class="form-input" id="giftShares" min="1" value="1" oninput="updateGiftAmount()">
+                </div>
+                <div>
+                    <label class="block mb-2" style="font-family: 'Tajawal', sans-serif; color: #1B5E52; font-weight: 700; font-size: 0.88rem;">المبلغ المطلوب:</label>
+                    <input type="text" class="form-input" id="giftAmount" value="1000 ريال" readonly style="background-color: #f5f5f0; color: #888; font-weight: bold; text-align: center;">
+                </div>
             </div>
             <label class="checkbox-label mb-4">
                 <input type="checkbox" id="hideDonorName">
-                إخفاء اسم المتبرع في الشهادة العامة
+                إخفاء اسم المتبرع
             </label>
             <button class="form-btn" onclick="submitGiftDonation()">
                 <i data-lucide="badge-check"></i>
-                تأكيد التبرع وإصدار الشهادة
+               تأكيد
             </button>
         </div>
     </section>
@@ -1883,16 +1910,20 @@ body {
         <p class="share-badge-sub">
 شارك الحملة مع أصدقائك</p>
         <canvas id="shareCanvas" class="share-badge-preview" width="320" height="180"></canvas>
-        <div class="share-social-row">
+        <div class="share-social-row" style="flex-wrap: wrap; justify-content: center;">
             <button class="share-btn share-btn-wa" onclick="shareWhatsApp()">
                 <i data-lucide="message-circle"></i>
                 واتساب
             </button>
-            <button class="share-btn share-btn-tw" onclick="shareTwitter()">
-                <i data-lucide="message-square"></i>
-                تويتر
+            <button class="share-btn share-btn-tw" style="background:#2E7D73;box-shadow:0 4px 15px rgba(46,125,115,0.3);" onclick="shareSMS()">
+                <i data-lucide="send"></i>
+                SMS
             </button>
-            <button class="share-btn share-btn-copy" onclick="shareCopyLink()">
+            <button class="share-btn share-btn-copy" onclick="shareCopyText()">
+                <i data-lucide="copy"></i>
+                نسخ النص
+            </button>
+            <button class="share-btn share-btn-copy" style="background:linear-gradient(135deg, #e0e0e0, #f5f5f5); color:#333; box-shadow:0 4px 15px rgba(0,0,0,0.1);" onclick="shareCopyLink()">
                 <i data-lucide="link"></i>
                 نسخ الرابط
             </button>
@@ -1929,7 +1960,7 @@ body {
 <!-- Sticky CTA -->
 <div class="sticky-cta-dense">
     
-    <button onclick="openWhatsApp()">
+    <button  style="background:linear-gradient(135deg, #e0e0e0, #f5f5f5); color:#333; box-shadow:0 4px 15px rgba(0,0,0,0.1);" onclick="openWhatsApp()">
         <i data-lucide="message-circle"></i>
        ساهم الآن
     </button>
@@ -1940,6 +1971,7 @@ body {
 
 </div><!-- end content-layer -->
 
+<script src="img_base64.js"></script>
 <script src="data.js"></script>
 <script>
 // ========================
@@ -2344,19 +2376,22 @@ function submitQuickForm() {
     const shares = parseInt(document.getElementById('formShares').value) || 1;
     const name = document.getElementById('formName').value.trim() || 'مُحسِن';
     const phone = document.getElementById('formPhone').value.trim() || 'غير متوفر';
+    const governorate = document.getElementById('formGovernorate') ? document.getElementById('formGovernorate').value.trim() : '';
 
     // حفظ التبرع كـ معلق في localStorage
     data.donations.push({
         id: Date.now(),
         donor: name,
         phone: phone,
+        governorate: governorate,
         date: new Date().toISOString().slice(0, 10),
         items: [{ qty: shares, status: 'pending', isGift: false }]
     });
     saveData();
 
     const waPhone = data.settings.whatsapp || '967775064424';
-    const msg = `مرحباً، أنا ${name} ورقمي ${phone} — أرغب في التبرع بـ ${shares} أسهم في حملة لحوم الأضاحي.`;
+    const govText = governorate ? ` من محافظة ${governorate}` : '';
+    const msg = `مرحباً، أنا ${name} ورقمي ${phone}${govText} — أرغب في التبرع بـ ${shares} أسهم في حملة لحوم الأضاحي.`;
     window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
 
     showMiniToast('تم إرسال طلبك بنجاح، سيتم التواصل معك قريباً.');
@@ -2380,11 +2415,27 @@ function selectGiftType(elem, value) {
 // ========================
 // GIFT DONATION
 // ========================
+function updateGiftAmount() {
+    const sharesInput = document.getElementById('giftShares');
+    const amountInput = document.getElementById('giftAmount');
+    if(!sharesInput || !amountInput) return;
+    let shares = parseInt(sharesInput.value) || 1;
+    if (shares < 1) {
+        shares = 1;
+        sharesInput.value = 1;
+    }
+    const price = data.settings.sharePrice || 1000;
+    amountInput.value = (shares * price).toLocaleString() + ' ريال';
+}
+
 function toggleGiftForm() {
     const checked = document.getElementById('isGift').checked;
     const content = document.getElementById('giftFormContent');
     content.style.display = checked ? 'block' : 'none';
-    if (checked) setTimeout(() => lucide.createIcons(), 50);
+    if (checked) {
+        setTimeout(() => lucide.createIcons(), 50);
+        updateGiftAmount();
+    }
 }
 
 function submitGiftDonation() {
@@ -2392,9 +2443,10 @@ function submitGiftDonation() {
     const donorName = document.getElementById('donorName').value.trim();
     const giftType = document.getElementById('giftType').value;
     const recipientName = document.getElementById('giftRecipientName').value.trim();
-    const recipientPhone = document.getElementById('recipientPhone').value.trim();
     const hideName = document.getElementById('hideDonorName').checked;
-    const shares = 1; // الافتراضي للإهداء السريع
+    const sharesInput = document.getElementById('giftShares');
+    const shares = sharesInput ? (parseInt(sharesInput.value) || 1) : 1;
+    const giftGovernorate = document.getElementById('giftGovernorate') ? document.getElementById('giftGovernorate').value.trim() : '';
 
     if (!isGift) {
         showMiniToast('الرجاء تفعيل خيار التبرع كإهداء');
@@ -2418,6 +2470,7 @@ function submitGiftDonation() {
         id: Date.now(),
         donor: donorName,
         phone: '',
+        governorate: giftGovernorate,
         date: new Date().toISOString().slice(0, 10),
         items: [{
             qty: shares,
@@ -2425,14 +2478,17 @@ function submitGiftDonation() {
             isGift: true,
             recipient: recipientName,
             giftType: giftType,
-            recipientPhone: recipientPhone,
+            recipientPhone: '',
             hideName: hideName
         }]
     });
     saveData();
 
     const waPhone = data.settings.whatsapp || '967775064424';
-    const msg = `مرحباً، أنا ${donorName} — أرغب في التبرع كإهداء ${giftType === 'deceased' ? 'عن روح' : giftType === 'parents' ? 'عن والديّ' : giftType === 'myself' ? 'عن نفسي' : 'عن'} ${recipientName}. هاتف المستلم: ${recipientPhone || 'غير متوفر'}`;
+    const totalAmount = shares * (data.settings.sharePrice || 1000);
+    const donorText = hideName ? "فاعل خير" : donorName;
+    const govText = giftGovernorate ? ` من ${giftGovernorate}` : '';
+    const msg = `عدد الأسهم: ${shares}\nالمبلغ: ${totalAmount}\nالمتبرع: ${donorText}${govText}`;
     window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     showMiniToast('تقبل الله طاعتكم. تم إرسال طلب التبرع وتوليد شهادة الإهداء بنجاح.');
 }
@@ -2497,22 +2553,31 @@ function drawShareBadge() {
 drawShareBadge();
 
 function getShareText() {
-    const remaining = Math.max(0, parseInt(data.settings.targetShares) - calcTotalShares());
-    const sharePrice = parseInt(data.settings.sharePrice) || 0;
-    return `🤝 انضم معي في مبادرة يد واحدة — حملة لحوم الأضاحي! متبقي ${remaining} سهم، السهم بـ ${sharePrice.toLocaleString()} ريال. كن سبباً في فرحة يتيم هذا العيد 🐑✨`;
+    const total = calcTotalShares();
+    const target = parseInt(data.settings.targetShares) || 1000;
+    const remaining = Math.max(0, target - total);
+    const siteUrl = data.settings.siteUrl || 'https://yad-wahda.org/donate';
+    return `🤝 انضم معي في مبادرة يد واحدة — حملة لحوم الأضاحي!\n\nبفضل الله تم جمع ${total} سهم حتى الآن، ومتبقي ${remaining} سهم لاكتمال الهدف.\nكن سبباً في فرحة يتيم هذا العيد 🐑✨\n\nللمشاركة:\n${siteUrl}`;
 }
 
 function shareWhatsApp() {
     window.open(`https://wa.me/?text=${encodeURIComponent(getShareText())}`, '_blank');
 }
 
-function shareTwitter() {
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(getShareText())}`, '_blank');
+function shareSMS() {
+    window.open(`sms:?body=${encodeURIComponent(getShareText())}`, '_blank');
+}
+
+function shareCopyText() {
+    navigator.clipboard.writeText(getShareText()).then(() => {
+        showMiniToast('تم نسخ رسالة المشاركة بنجاح!');
+    });
 }
 
 function shareCopyLink() {
-    navigator.clipboard.writeText(getShareText()).then(() => {
-        showMiniToast('تم نسخ رسالة المشاركة!');
+    const siteUrl = data.settings.siteUrl || 'https://yad-wahda.org/donate';
+    navigator.clipboard.writeText(siteUrl).then(() => {
+        showMiniToast('تم نسخ رابط الموقع بنجاح!');
     });
 }
 
@@ -2643,8 +2708,14 @@ function updateInviteTemplate() {
     document.getElementById('inviteTemplate').value = template;
 }
 
-document.getElementById('senderName').addEventListener('input', updateInviteTemplate);
-document.getElementById('inviteeName').addEventListener('input', updateInviteTemplate);
+document.getElementById('senderName').addEventListener('input', function() {
+    updateInviteTemplate();
+    generateInviteImage();
+});
+document.getElementById('inviteeName').addEventListener('input', function() {
+    updateInviteTemplate();
+    generateInviteImage();
+});
 
 function getInviteText() {
     const recipient = document.getElementById('inviteeName').value.trim();
@@ -2704,14 +2775,17 @@ function generateInviteImage() {
         preview.style.color = '#666';
         return;
     }
-    preview.innerHTML = `<div style="text-align:center;line-height:2;position:relative;z-index:1;text-shadow:0 2px 8px rgba(0,0,0,0.5);">
-        <div style="font-size:1.2rem;font-weight:900;color:#fff;">${recipient}</div>
-        <div style="font-size:0.85rem;color:rgba(255,255,255,0.8);">مدعو من</div>
-        <div style="font-size:1.1rem;font-weight:700;color:#ded4bb;margin-top:2px;">${sender}</div>
-        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:8px;">مبادرة يد واحدة - حملة لحوم الأضاحي</div>
+    preview.innerHTML = `
+    <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; width:100%; height:100%; box-sizing:border-box; padding:20px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        <h2 style="font-size:16px; font-weight:bold; color:#225e90; margin-right:16%; margin-bottom:10px; margin-top:0;">${recipient}</h2>
+        <p style="font-size:13px; font-weight:500; color:#6e91af; line-height:1.3; margin:0 0 15px 0; padding:0 5px;">
+            أدعوك للمشاركة في حملة أضاحي العيد التي تنظمها مبادرة 
+            <span style="font-size:14px; font-weight:900; color:#66a943;"><br>يد واحدة<br></span>  و دمت بألف خير
+        </p>
+        <h4 style="font-size:13px; font-weight:bold; color:#225e90; margin:0; margin-right:16%;">${sender}</h4>
     </div>`;
-    preview.style.background = 'url(img/invitation.png) center/cover no-repeat';
-    preview.style.color = '#fff';
+    preview.style.background = 'url(' + (typeof INVITATION_B64 !== "undefined" ? INVITATION_B64 : 'img/invitation.png') + ') center/cover no-repeat';
+    // preview.style.color = '#fff'; // Removed to avoid overriding user's colors
 }
 
 function previewInviteImage() {
@@ -2722,6 +2796,7 @@ function previewInviteImage() {
     }
     document.getElementById('inviteeError').style.display = 'none';
     showMiniToast('جاري تصميم بطاقتك الخاصة بدقة عالية، يرجى الانتظار لحظات...');
+    generateInviteImage();
     setTimeout(() => showMiniToast('تم تصميم البطاقة بنجاح!'), 1500);
 }
 
@@ -2734,43 +2809,70 @@ function downloadInviteImage() {
     document.getElementById('inviteeError').style.display = 'none';
     const sender = document.getElementById('senderName').value.trim() || 'محب الخير';
     const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.src = 'img/invitation.png';
+    img.src = typeof INVITATION_B64 !== "undefined" ? INVITATION_B64 : 'img/invitation.png';
     img.onload = function() {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth || 800;
-        canvas.height = img.naturalHeight || 500;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
-        ctx.textAlign = 'center';
-        ctx.shadowColor = 'rgba(0,0,0,0.4)';
-        ctx.shadowBlur = 6;
-        ctx.fillStyle = '#fff';
-        ctx.font = `bold ${Math.round(canvas.width * 0.055)}px Cairo`;
-        ctx.fillText(recipient, cx, cy - 20);
-        ctx.shadowBlur = 4;
-        ctx.fillStyle = 'rgba(255,255,255,0.8)';
-        ctx.font = `${Math.round(canvas.width * 0.028)}px Cairo`;
-        ctx.fillText('مدعو من', cx, cy + 25);
-        ctx.fillStyle = '#ded4bb';
-        ctx.font = `bold ${Math.round(canvas.width * 0.045)}px Cairo`;
-        ctx.fillText(sender, cx, cy + 65);
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = 'rgba(255,255,255,0.4)';
-        ctx.font = `${Math.round(canvas.width * 0.02)}px Cairo`;
-        ctx.fillText('مبادرة يد واحدة - حملة لحوم الأضاحي', cx, canvas.height - 30);
-        const link = document.createElement('a');
-        link.download = 'دعوة-تبرع-يد-واحدة.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+        try {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth || 800;
+            canvas.height = img.naturalHeight || 500;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const cx = canvas.width / 2;
+            const scale = canvas.width / 480;
+            const shiftedCx = cx - (canvas.width * 0.08);
 
-        const sender = document.getElementById('senderName').value.trim();
-        const recipient = document.getElementById('inviteeName').value.trim();
-        recordInvitation(sender, recipient, 'image');
+            ctx.textBaseline = 'middle';
+            ctx.shadowBlur = 0; 
+            
+            const h2_y = canvas.height * (104 / 296);
+            const p1_y = canvas.height * (139 / 296);
+            const p2_y = canvas.height * (160 / 296);
+            const h4_y = canvas.height * (195 / 296);
 
-        showMiniToast('تم تحميل الصورة بنجاح!');
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#225e90';
+            ctx.font = `bold ${17 * scale}px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+            ctx.fillText(recipient, shiftedCx, h2_y);
+
+            ctx.fillStyle = '#6e91af';
+            ctx.font = `500 ${14 * scale}px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+            ctx.fillText('أدعوك للمشاركة في حملة أضاحي العيد التي تنظمها مبادرة', cx, p1_y);
+
+            ctx.font = `900 ${16 * scale}px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+            const w1 = ctx.measureText('يد واحدة').width;
+            ctx.font = `500 ${14 * scale}px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+            const w2 = ctx.measureText(' و دمت بألف خير').width;
+            const totalW = w1 + w2;
+            let startX = cx + (totalW / 2);
+            
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#66a943';
+            ctx.font = `900 ${16 * scale}px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+            ctx.fillText('يد واحدة', startX, p2_y);
+            
+            startX -= w1;
+            ctx.fillStyle = '#6e91af';
+            ctx.font = `500 ${14 * scale}px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+            ctx.fillText(' و دمت بألف خير', startX, p2_y);
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#225e90';
+            ctx.font = `bold ${13 * scale}px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+            ctx.fillText(sender, shiftedCx, h4_y);
+            const link = document.createElement('a');
+            link.download = 'دعوة-تبرع-يد-واحدة.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            const recordSender = document.getElementById('senderName').value.trim();
+            const recordRecipient = document.getElementById('inviteeName').value.trim();
+            recordInvitation(recordSender, recordRecipient, 'image');
+
+            showMiniToast('تم تحميل الصورة بنجاح!');
+        } catch (e) {
+            console.error(e);
+            showMiniToast('عذراً، حدث خطأ أثناء إنشاء الصورة. تأكد من تشغيل الملف على خادم محلي.');
+        }
     };
     img.onerror = function() {
         showMiniToast('عذراً، حدث خطأ أثناء معالجة الصورة. يرجى المحاولة مرة أخرى.');
