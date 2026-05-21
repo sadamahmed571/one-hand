@@ -38,9 +38,11 @@ function loadData() {
         if (!raw.wallets) raw.wallets = getDefaults().wallets;
         if (!raw.stats) raw.stats = getDefaults().stats;
         if (!raw.settings) raw.settings = getDefaults().settings;
+        if (!raw.invitations) raw.invitations = getDefaults().invitations;
 
         if (raw.settings.manualDonations === undefined) raw.settings.manualDonations = 0;
         if (raw.settings.manualShares === undefined) raw.settings.manualShares = 0;
+        if (raw.settings.inviteTemplate === undefined) raw.settings.inviteTemplate = getDefaults().settings.inviteTemplate;
 
         return raw;
     } catch (e) {
@@ -61,9 +63,9 @@ function getDefaults() {
             { id: 3, message: '✨ شكراً لكافل 10 أسهم - بارك الله فيك', icon: 'star', sort: 2, active: true },
         ],
         wallets: [
-            { id: 1, name: 'كريمي - أم فلوس', account: '3170928457', sort: 0 },
-            { id: 2, name: 'محفظة جيب - Jaib', account: '774261416', sort: 1 },
-            { id: 3, name: 'محفظة فلوسك - Floosak', account: '774261416', sort: 2 },
+            { id: 1, name: 'كريمي - أم فلوس', account: '3170928457', image: 'img/mfloos.jpg', gradient: 'linear-gradient(135deg, #FF9800, #F57C00)', sort: 0 },
+            { id: 2, name: 'محفظة جيب - Jaib', account: '774261416', image: 'img/jeep.jpg', gradient: 'linear-gradient(135deg, #4CAF50, #2E7D73)', sort: 1 },
+            { id: 3, name: 'محفظة فلوسك - Floosak', account: '774261416', image: 'img/floosk.jpg', gradient: 'linear-gradient(135deg, #C9A84C, #8B6914)', sort: 2 },
         ],
         stats: { orphans: 142, families: 89, governorates: 4, meatKg: 712 },
         settings: {
@@ -73,8 +75,10 @@ function getDefaults() {
             whatsapp: '967775064424',
             siteUrl: 'https://yad-wahda.org/donate',
             manualDonations: 0,
-            manualShares: 0
-        }
+            manualShares: 0,
+            inviteTemplate: 'أخي الغالي {recipient}، أحببت لك الخير ودعوتك لتكون جزءاً من هذا العطاء المتميز. يمكنك المساهمة والتبرع الآن عبر الرابط التالي:\n{url}\nأخوك: {sender}'
+        },
+        invitations: []
     };
 }
 
@@ -88,6 +92,19 @@ function refreshData() {
 }
 
 function calcTotalShares() {
-    const actual = data.donations.reduce((sum, d) => sum + d.items.reduce((s, i) => s + i.qty, 0), 0);
+    const actual = data.donations.reduce((sum, d) =>
+        sum + d.items.filter(i => i.status === 'completed').reduce((s, i) => s + i.qty, 0)
+    , 0);
     return actual + (parseInt(data.settings.manualShares, 10) || 0);
+}
+
+function recordInvitation(sender, recipient, type) {
+    data.invitations.push({
+        id: Date.now(),
+        sender: sender || 'محب الخير',
+        recipient: recipient,
+        type: type, // 'text' or 'image'
+        date: new Date().toISOString()
+    });
+    saveData();
 }

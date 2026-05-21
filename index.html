@@ -2102,16 +2102,21 @@ function renderTicker() {
 function renderWallets() {
     const container = document.getElementById('walletsContainer');
     if (!container) return;
-    const wallets = data.wallets || [];
+    const wallets = (data.wallets || []).sort((a,b) => (a.sort || 0) - (b.sort || 0));
     container.innerHTML = wallets.map(w => `
         <div class="story-item" onclick="copyNumber('${w.account}', this)">
-            <div class="story-avatar" style="background: linear-gradient(135deg, #1B5E52, #2E7D73);">
-                <span style="font-size:1.5rem;">💰</span>
+            <div class="story-avatar" style="background: ${w.gradient || 'linear-gradient(135deg, #1B5E52, #2E7D73)'}; padding:0; overflow:hidden;">
+                ${w.image ? `<img src="${w.image}" alt="${w.name}" class="w-full h-full rounded-full object-cover img">` : `<span style="font-size:1.5rem;">💰</span>`}
             </div>
             <span class="story-name">${w.name}</span>
             <div class="story-number">
                 <span dir="ltr">${w.account}</span>
-                <span class="story-copy-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
+                <span class="story-copy-icon">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                </span>
             </div>
         </div>
     `).join('');
@@ -2336,12 +2341,26 @@ function toggleQuickForm() {
 }
 
 function submitQuickForm() {
-    const shares = document.getElementById('formShares').value;
+    const shares = parseInt(document.getElementById('formShares').value) || 1;
     const name = document.getElementById('formName').value.trim() || 'مُحسِن';
     const phone = document.getElementById('formPhone').value.trim() || 'غير متوفر';
+
+    // حفظ التبرع كـ معلق في localStorage
+    data.donations.push({
+        id: Date.now(),
+        donor: name,
+        phone: phone,
+        date: new Date().toISOString().slice(0, 10),
+        items: [{ qty: shares, status: 'pending', isGift: false }]
+    });
+    saveData();
+
     const waPhone = data.settings.whatsapp || '967775064424';
     const msg = `مرحباً، أنا ${name} ورقمي ${phone} — أرغب في التبرع بـ ${shares} أسهم في حملة لحوم الأضاحي.`;
     window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+
+    showMiniToast('تم إرسال طلبك بنجاح، سيتم التواصل معك قريباً.');
+    toggleQuickForm();
 }
 
 function selectShares(elem, value) {
@@ -2375,6 +2394,7 @@ function submitGiftDonation() {
     const recipientName = document.getElementById('giftRecipientName').value.trim();
     const recipientPhone = document.getElementById('recipientPhone').value.trim();
     const hideName = document.getElementById('hideDonorName').checked;
+    const shares = 1; // الافتراضي للإهداء السريع
 
     if (!isGift) {
         showMiniToast('الرجاء تفعيل خيار التبرع كإهداء');
@@ -2393,11 +2413,28 @@ function submitGiftDonation() {
         return;
     }
 
-    const displayName = hideName ? 'فاعل خير' : donorName;
+    // حفظ التبرع كـ معلق
+    data.donations.push({
+        id: Date.now(),
+        donor: donorName,
+        phone: '',
+        date: new Date().toISOString().slice(0, 10),
+        items: [{
+            qty: shares,
+            status: 'pending',
+            isGift: true,
+            recipient: recipientName,
+            giftType: giftType,
+            recipientPhone: recipientPhone,
+            hideName: hideName
+        }]
+    });
+    saveData();
+
     const waPhone = data.settings.whatsapp || '967775064424';
     const msg = `مرحباً، أنا ${donorName} — أرغب في التبرع كإهداء ${giftType === 'deceased' ? 'عن روح' : giftType === 'parents' ? 'عن والديّ' : giftType === 'myself' ? 'عن نفسي' : 'عن'} ${recipientName}. هاتف المستلم: ${recipientPhone || 'غير متوفر'}`;
     window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
-    showMiniToast('تقبل الله طاعتكم. تم تسجيل السهم وتوليد شهادة الإهداء بنجاح.');
+    showMiniToast('تقبل الله طاعتكم. تم إرسال طلب التبرع وتوليد شهادة الإهداء بنجاح.');
 }
 
 // ========================
@@ -2594,10 +2631,15 @@ function setInviteMode(mode) {
 let SITE_URL = 'https://yad-wahda.org/donate';
 
 function updateInviteTemplate() {
-    SITE_URL = data.settings.siteUrl || SITE_URL;
+    const url = data.settings.siteUrl || 'https://yad-wahda.org/donate';
     const sender = document.getElementById('senderName').value.trim() || 'محب الخير';
-    const recipient = document.getElementById('inviteeName').value.trim();
-    const template = `أخي الغالي ${recipient || '[...]'}، أحببت لك الخير ودعوتك لتكون جزءاً من هذا العطاء المتميز. يمكنك المساهمة والتبرع الآن عبر الرابط التالي:\n${SITE_URL}\nأخوك: ${sender}`;
+    const recipient = document.getElementById('inviteeName').value.trim() || '[...]';
+    let template = data.settings.inviteTemplate || 'أخي الغالي {recipient}، أحببت لك الخير ودعوتك لتكون جزءاً من هذا العطاء المتميز. يمكنك المساهمة والتبرع الآن عبر الرابط التالي:\n{url}\nأخوك: {sender}';
+
+    template = template.replace(/{recipient}/g, recipient)
+                       .replace(/{url}/g, url)
+                       .replace(/{sender}/g, sender);
+
     document.getElementById('inviteTemplate').value = template;
 }
 
@@ -2618,6 +2660,9 @@ function copyInviteText() {
     const text = getInviteText();
     if (!text) return;
     navigator.clipboard.writeText(text).then(() => {
+        const sender = document.getElementById('senderName').value.trim();
+        const recipient = document.getElementById('inviteeName').value.trim();
+        recordInvitation(sender, recipient, 'text');
         showMiniToast('تم نسخ نص الدعوة بنجاح إلى الحافظة!');
     });
 }
@@ -2625,18 +2670,27 @@ function copyInviteText() {
 function shareInviteWA() {
     const text = getInviteText();
     if (!text) return;
+    const sender = document.getElementById('senderName').value.trim();
+    const recipient = document.getElementById('inviteeName').value.trim();
+    recordInvitation(sender, recipient, 'text');
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 function shareInviteX() {
     const text = getInviteText();
     if (!text) return;
+    const sender = document.getElementById('senderName').value.trim();
+    const recipient = document.getElementById('inviteeName').value.trim();
+    recordInvitation(sender, recipient, 'text');
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 function shareInviteSMS() {
     const text = getInviteText();
     if (!text) return;
+    const sender = document.getElementById('senderName').value.trim();
+    const recipient = document.getElementById('inviteeName').value.trim();
+    recordInvitation(sender, recipient, 'text');
     window.open(`sms:?body=${encodeURIComponent(text)}`, '_blank');
 }
 
@@ -2711,6 +2765,11 @@ function downloadInviteImage() {
         link.download = 'دعوة-تبرع-يد-واحدة.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
+
+        const sender = document.getElementById('senderName').value.trim();
+        const recipient = document.getElementById('inviteeName').value.trim();
+        recordInvitation(sender, recipient, 'image');
+
         showMiniToast('تم تحميل الصورة بنجاح!');
     };
     img.onerror = function() {
