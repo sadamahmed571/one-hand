@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>لوحة التحكم - مبادرة يد واحدة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#F8FAFC', 
+                        deepGreen: '#1b4d3e', 
+                        teal: '#20634f',
+                        mint: '#38bdf8', 
+                        gold: '#aa822c', 
+                        goldLight: '#c29c47',
+                        darkGold: '#8c6a21', 
+                        night: '#0b1e19',
+                    },
+                    fontFamily: { 
+                        tajawal: ['Tajawal', 'sans-serif'] 
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, input, select, textarea, button {
+            font-family: 'Tajawal', sans-serif !important;
+        }
+        body { 
+            background: #f1f5f9;
+            padding: 1.5rem;
+            color: #334155;
+        }
+        @media (max-width: 640px) {
+            body { padding: 0.75rem; }
+        }
+
+        /* ===== تنسيق البطاقات الرسمية ===== */
+        .card { 
+            background: #ffffff; 
+            border-radius: 16px; 
+            border: 1px solid #cbd5e1;
+            border-right: 4px solid #1b4d3e;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            padding: 1.5rem;
+            transition: box-shadow 0.2s;
+        }
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03);
+        }
+        .stat-card { 
+            background: white;
+            border-radius: 16px;
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+            border: 1px solid #cbd5e1;
+            border-bottom: 3px solid #1b4d3e;
+            transition: transform 0.2s;
+        }
+        .stat-card .num { 
+            font-size: 2rem; 
+            font-weight: 800; 
+            letter-spacing: -0.5px;
+            color: #1b4d3e;
+        }
+        .stat-card .label { 
+            font-size: 0.8rem; 
+            font-weight: 700; 
+            opacity: 0.8; 
+            margin-top: 4px;
+        }
+        .form-input { 
+            width: 100%; 
+            padding: 10px 14px; 
+            border: 1.5px solid #cbd5e1; 
+            border-radius: 10px; 
+            font-size: 0.9rem; 
+            color: #1b4d3e; 
+            background: #fff; 
+            transition: all 0.2s; 
+        }
+        .form-input:focus { 
+            outline: none; 
+            border-color: #1b4d3e; 
+            box-shadow: 0 0 0 3px rgba(27,77,62,0.15); 
+        }
+        .btn { 
+            padding: 8px 22px; 
+            border-radius: 30px; 
+            border: none; 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            transition: all 0.15s; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        .btn-primary { 
+            background: #1b4d3e; 
+            color: #fff; 
+            border: 1px solid #123329;
+        }
+        .btn-primary:hover { 
+            background: #153c30; 
+            transform: translateY(-1px); 
+        }
+        .btn-gold { 
+            background: #aa822c; 
+            color: #fff; 
+            border: 1px solid #8c6a21;
+        }
+        .btn-gold:hover { 
+            background: #947124; 
+            transform: translateY(-1px); 
+        }
+        .btn-danger { 
+            background: #fff; 
+            color: #dc2626; 
+            border: 1px solid #fca5a5;
+        }
+        .btn-danger:hover { 
+            background: #fef2f2; 
+            color: #991b1b; 
+            border-color: #f87171;
+        }
+        .btn-sm { padding: 5px 14px; font-size: 0.75rem; }
+
+        /* جداول راقية */
+        .data-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 0.85rem; 
+        }
+        .data-table th { 
+            text-align: start; 
+            padding: 14px 12px; 
+            font-weight: 800; 
+            color: #1b4d3e; 
+            border-bottom: 2px solid #cbd5e1; 
+            background: #f8fafc;
+        }
+        .data-table td { 
+            padding: 12px 12px; 
+            border-bottom: 1px solid #e2e8f0; 
+            color: #334155; 
+            vertical-align: middle;
+        }
+        .data-table tr:hover td { 
+            background: #f1f5f9; 
+        }
+        .badge { 
+            padding: 3px 12px; 
+            border-radius: 40px; 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            display: inline-block;
+        }
+        .badge-green { background: #e2f0d9; color: #1b4d3e; border: 1px solid #c5e0b4; }
+        .badge-gold { background: #fff2cc; color: #aa822c; border: 1px solid #ffe599; }
+
+        .toast-admin { 
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            background: #1b4d3e; color: #fff; padding: 12px 28px; border-radius: 30px;
+            font-weight: 700; font-size: 0.85rem; z-index: 9999; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            display: none; border: 1px solid #cbd5e1;
+        }
+        
+        .login-page { 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: linear-gradient(135deg, #1b4d3e, #0b1e19); 
+            margin: -1.5rem; 
+        }
+        @media (max-width: 640px) {
+            .login-page { margin: -0.75rem; }
+        }
+        .login-box { 
+            background: #fff; 
+            border-radius: 24px; 
+            padding: 2.2rem; 
+            width: 360px; 
+            border: 1px solid #cbd5e1; 
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); 
+            text-align: center; 
+        }
+        .checkbox-label { 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-start; 
+            gap: 8px; 
+            font-size: 0.85rem; 
+            color: #475569; 
+            margin: 12px 0; 
+            cursor: pointer; 
+        }
+        .checkbox-label input { width: 18px; height: 18px; cursor: pointer; }
+
+        /* ===== تحسين الهاتف ===== */
+        @media (max-width: 480px) {
+            body { 
+                padding: 0.6rem; 
+            }
+            #adminApp {
+                padding-left: 0.15rem;
+                padding-right: 0.15rem;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+            }
+            .card { 
+                padding: 0.9rem !important; 
+                border-radius: 12px !important;
+                margin-bottom: 0.5rem;
+            }
+            .stat-card { 
+                padding: 8px 4px !important;
+                border-radius: 12px;
+            }
+            .stat-card .num { 
+                font-size: 1.15rem !important; 
+            }
+            .stat-card .label { 
+                font-size: 0.55rem !important;
+                margin-top: 2px;
+            }
+            .data-table { 
+                font-size: 0.65rem !important;
+            }
+            .data-table th, .data-table td { 
+                padding: 8px 6px !important;
+            }
+            .btn { 
+                padding: 6px 14px !important; 
+                font-size: 0.75rem !important;
+                gap: 4px;
+            }
+            .btn-sm { padding: 4px 8px !important; font-size: 0.65rem !important; }
+            .form-input { 
+                padding: 8px 10px !important; 
+                font-size: 0.8rem !important;
+                border-radius: 8px;
+            }
+            .badge { 
+                font-size: 0.6rem !important;
+                padding: 2px 8px;
+            }
+            .grid { 
+                gap: 8px !important; 
+            }
+            .modal-content { padding: 1rem; max-width: 94%; }
+            .login-box { padding: 1.5rem; width: 90%; }
+            .login-box h1 { font-size: 1.2rem; }
+            
+            #dashStats {
+                gap: 0.35rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- صفحة تسجيل الدخول -->
+    <div id="loginPage" class="login-page">
+        <div class="login-box">
+            <div class="text-4xl mb-3"><i data-lucide="badge-check" style="color:#aa822c;width:48px;height:48px;margin: 0 auto;"></i></div>
+            <h1 class="text-xl font-bold text-deepGreen mb-1">لوحة التحكم</h1>
+            <p class="text-gray-500 text-xs mb-4">مبادرة يد واحدة — حملة لحوم الأضاحي</p>
+            <input type="password" class="form-input mb-2 text-center" id="loginPass" placeholder="كلمة المرور" dir="ltr">
+            <label class="checkbox-label">
+                <input type="checkbox" id="rememberCheckbox"> 
+                <span>تذكرني</span>
+            </label>
+            <button class="btn btn-primary w-full justify-center" onclick="doLogin()">دخول</button>
+            <p id="loginError" style="color:#c00;font-size:0.8rem;margin-top:10px;display:none;">كلمة المرور خاطئة</p>
+        </div>
+    </div>
+
+    <!-- تطبيق لوحة التحكم الرئيسي -->
+    <div id="adminApp" style="display:none;" class="max-w-6xl mx-auto py-6 px-4">
+        <!-- الترويسة العلوية -->
+        <header class="bg-white border border-gray-200 rounded-3xl p-6 flex items-center justify-between shadow-sm mb-6 flex-wrap gap-4">
+            <div class="flex items-center gap-3">
+                <img src="img/logo.jpg" alt="شعار الحملة" class="w-12 h-12 object-cover rounded-2xl border border-gray-200 shadow-sm">
+                <div>
+                    <h1 class="text-xl font-black text-deepGreen">لوحة التحكم المبسطة</h1>
+                    <p class="text-xs text-gray-500 font-medium">مبادرة يد واحدة — حملة لحوم الأضاحي</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="btn btn-gold btn-sm flex items-center gap-2">
+                    <i data-lucide="home" class="w-4 h-4"></i>
+                    <span>العودة إلى موقع الحملة</span>
+                </a>
+                <button class="btn btn-danger btn-sm flex items-center gap-2" onclick="doLogout()">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span>تسجيل الخروج</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- شبكة الإحصائيات الحالية (3 أعمدة دائماً في الهواتف والشاشات الكبيرة) -->
+        <div class="grid grid-cols-3 gap-4 mb-6" id="dashStats"></div>
+
+        <!-- قسم إدارة التبرعات الكلية -->
+        <div class="card mb-6 p-0 overflow-hidden">
+            <div class="p-6 border-b border-gray-100 flex items-center justify-between flex-wrap gap-3 bg-cream/10">
+                <h3 class="text-lg font-bold text-deepGreen flex items-center gap-2">
+                    <i data-lucide="package" class="w-5 h-5 text-gold"></i>
+                    إدارة التبرعات الكلية
+                </h3>
+                <button class="btn btn-gold btn-sm" onclick="openShareModal()">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    <span>إضافة تبرع جديد</span>
+                </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="data-table w-full">
+                    <thead>
+                        <tr>
+                            <th class="w-16">#</th>
+                            <th>المتبرع</th>
+                            <th>العدد</th>
+                            <th>تفاصيل الأسهم</th>
+                            <th>تاريخ التبرع</th>
+                            <th class="w-24">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sharesTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- قسم الإعدادات العامة (عرض حقلين في الصف دائماً في شاشات الهاتف والكمبيوتر) -->
+        <div class="card mb-6">
+            <h3 class="text-lg font-bold text-deepGreen mb-4 flex items-center gap-2">
+                <i data-lucide="settings" class="w-5 h-5 text-gold"></i>
+                الإعدادات العامة للحملة
+            </h3>
+            <div class="grid grid-cols-2 gap-2 md:gap-5" id="settingsForm"></div>
+        </div>
+
+        <!-- أزرار الإجراءات السفلية -->
+        <div class="flex justify-end mb-8">
+            <button class="btn btn-gold" onclick="exportCampaignData()">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span>تصدير بيانات الحملة بالكامل (JSON)</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة تبرع جديد -->
+    <div id="shareModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)closeShareModal()">
+        <div class="bg-white rounded-3xl p-6 max-w-xl w-full border-r-4 border-gold shadow-xl" style="max-height:90vh;overflow-y:auto;">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-black text-deepGreen">➕ إضافة تبرع جديد</h3>
+                <button onclick="closeShareModal()" class="text-2xl text-gray-400 hover:text-gray-600">&times;</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                <input type="text" class="form-input" id="sDonor" placeholder="اسم المتبرع">
+                <input type="tel" class="form-input" id="sPhone" placeholder="رقم الجوال" dir="ltr">
+            </div>
+            <div class="mb-3">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-bold text-deepGreen">تفاصيل الأسهم</span>
+                    <button class="btn btn-sm btn-primary" onclick="addItemRow()">➕ إضافة بند</button>
+                </div>
+                <div id="itemsContainer"></div>
+            </div>
+            <div class="flex gap-3 mt-5">
+                <button class="btn btn-primary flex-1 justify-center" onclick="saveShare()">💾 حفظ التبرع</button>
+                <button class="btn btn-danger" onclick="closeShareModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-admin" id="toastAdmin"></div>
+
+    <script src="data.js"></script>
+    <script>
+        // ===== إدارة الجلسة =====
+        const REMEMBER_KEY = 'admin_remembered';
+
+        function showToast(msg) { 
+            const t = document.getElementById('toastAdmin'); 
+            t.textContent = msg; 
+            t.style.display = 'block'; 
+            setTimeout(() => t.style.display = 'none', 2800); 
+        }
+
+        // ===== تسجيل الدخول وإدارة الجلسة =====
+        function doLogin() {
+            const pass = document.getElementById('loginPass').value;
+            const remember = document.getElementById('rememberCheckbox').checked;
+            if (pass === 'admin123') {
+                if (remember) {
+                    localStorage.setItem(REMEMBER_KEY, 'true');
+                } else {
+                    localStorage.removeItem(REMEMBER_KEY);
+                }
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('adminApp').style.display = 'block';
+                initApp();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        // تسجيل الخروج
+        function doLogout() {
+            localStorage.removeItem(REMEMBER_KEY);
+            document.getElementById('adminApp').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('loginPass').value = '';
+            document.getElementById('rememberCheckbox').checked = false;
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        // التحقق التلقائي
+        function checkAutoLogin() {
+            const remembered = localStorage.getItem(REMEMBER_KEY);
+            if (remembered === 'true') {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('adminApp').style.display = 'block';
+                initApp();
+            } else {
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('adminApp').style.display = 'none';
+            }
+        }
+
+        // ===== تهيئة وعرض المكونات الرئيسية =====
+        function initApp() {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            renderDashboard(); 
+            renderShares(); 
+            renderSettings();
+        }
+
+        // تحديث لوحة الإحصائيات
+        function renderDashboard() {
+            const totalShares = calcTotalShares();
+            const target = parseInt(data.settings.targetShares, 10) || 0;
+            const remaining = Math.max(0, target - totalShares);
+            const totalRevenue = totalShares * (parseInt(data.settings.sharePrice, 10) || 0);
+            
+            // عدد عمليات التبرع الكلي (المدخل الفعلي + المضاف يدوياً دفعة واحدة)
+            const totalDonors = data.donations.length + (parseInt(data.settings.manualDonations, 10) || 0); 
+            
+            document.getElementById('dashStats').innerHTML = `
+                <div class="stat-card" style="background:#fff;">
+                    <div class="num">${totalDonors.toLocaleString()}</div>
+                    <div class="label text-gray-500">عدد التبرعات</div>
+                </div>
+                <div class="stat-card" style="background:#fff;">
+                    <div class="num">${remaining.toLocaleString()}</div>
+                    <div class="label text-gray-500">عدد الاسهم المتبقية</div>
+                </div>
+                <div class="stat-card" style="background:#fff;">
+                    <div class="num">${totalRevenue.toLocaleString()}</div>
+                    <div class="label text-gray-500">المبلغ حتى الان</div>
+                </div>
+            `;
+        }
+
+        // عرض قائمة التبرعات
+        function renderShares() {
+            const tbody = document.getElementById('sharesTableBody');
+            if (!data.donations.length) { 
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-gray-400 py-8">لا توجد تبرعات مسجلة</td></tr>'; 
+                return; 
+            }
+            tbody.innerHTML = data.donations.map((d, i) => {
+                const total = d.items.reduce((s, it) => s + it.qty, 0);
+                const itemsList = d.items.map(it => `
+                    <span class="badge ${it.status === 'completed' ? 'badge-green' : 'badge-gold'} ml-1">
+                        ${it.isGift ? '🎁' : '🐑'} ${it.qty}
+                    </span>
+                `).join('');
+                return `
+                    <tr>
+                        <td class="font-bold">${d.id}</td>
+                        <td>${d.donor}</td>
+                        <td class="font-bold text-gold">${total}</td>
+                        <td>${itemsList}</td>
+                        <td class="text-gray-400 text-xs">${d.date}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="deleteShare(${i})">
+                                حذف
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ===== إدارة الأسهم وإضافة التبرع =====
+        let itemRowCounter = 0;
+
+        function addItemRow(initial = {}) {
+            const container = document.getElementById('itemsContainer');
+            const idx = itemRowCounter++;
+            const div = document.createElement('div');
+            div.id = 'itemRow_' + idx;
+            div.className = 'border border-gray-200 rounded-xl p-3 mb-2 bg-slate-50';
+            div.innerHTML = `
+                <div class="flex justify-between mb-2">
+                    <span class="text-xs font-bold text-deepGreen">بند #${idx + 1}</span>
+                    <button class="text-red-500 text-xs font-bold" onclick="removeItemRow(${idx})">✕ إزالة</button>
+                </div>
+                <div class="grid grid-cols-2 gap-2 mb-2">
+                    <input type="number" id="iqty_${idx}" class="form-input" value="1" min="1" placeholder="عدد الأسهم">
+                    <select id="istatus_${idx}" class="form-input">
+                        <option value="completed">مكتمل</option>
+                        <option value="pending">معلق</option>
+                    </select>
+                </div>
+                <label class="flex items-center gap-2 text-xs cursor-pointer select-none">
+                    <input type="checkbox" id="iisGift_${idx}" onchange="document.getElementById('igiftFields_${idx}').style.display=this.checked?'block':'none'"> 
+                    <span>🎁 هذا البند عبارة عن إهداء</span>
+                </label>
+                <div id="igiftFields_${idx}" style="display:none" class="mt-2 space-y-2">
+                    <input type="text" id="irecipient_${idx}" placeholder="اسم المُهدى إليه" class="form-input text-sm">
+                    <select id="igiftType_${idx}" class="form-input text-sm">
+                        <option value="myself">عن نفسي</option>
+                        <option value="parents">عن والديّ</option>
+                        <option value="deceased">عن ميت</option>
+                        <option value="other">شخص آخر</option>
+                    </select>
+                    <input type="tel" id="irPhone_${idx}" placeholder="جوال المستلم (اختياري)" class="form-input text-sm">
+                    <label class="flex items-center gap-2 text-xs cursor-pointer select-none">
+                        <input type="checkbox" id="ihideName_${idx}">
+                        <span>إخفاء الاسم في الشهادة العامة</span>
+                    </label>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeItemRow(idx) { 
+            document.getElementById('itemRow_' + idx)?.remove(); 
+        }
+
+        function openShareModal() { 
+            document.getElementById('shareModal').style.display = 'flex'; 
+            document.getElementById('sDonor').value = ''; 
+            document.getElementById('sPhone').value = ''; 
+            document.getElementById('itemsContainer').innerHTML = ''; 
+            itemRowCounter = 0; 
+            addItemRow(); 
+        }
+
+        function closeShareModal() { 
+            document.getElementById('shareModal').style.display = 'none'; 
+        }
+
+        function saveShare() {
+            const donor = document.getElementById('sDonor').value.trim() || 'مُحسِن';
+            const phone = document.getElementById('sPhone').value.trim();
+            const rows = document.querySelectorAll('#itemsContainer > div');
+            if (!rows.length) { 
+                showToast('أضف بند تبرع واحد على الأقل'); 
+                return; 
+            }
+            const items = [];
+            for (let div of rows) {
+                const idMatch = div.id.match(/itemRow_(\d+)/); 
+                if (!idMatch) continue;
+                const idx = idMatch[1];
+                const qty = parseInt(document.getElementById('iqty_' + idx)?.value) || 1;
+                const status = document.getElementById('istatus_' + idx)?.value || 'completed';
+                const isGift = document.getElementById('iisGift_' + idx)?.checked || false;
+                
+                let item = { qty, status, isGift };
+                if (isGift) {
+                    let recipient = document.getElementById('irecipient_' + idx)?.value.trim();
+                    if (!recipient) { 
+                        showToast('أدخل اسم المُهدى إليه'); 
+                        return; 
+                    }
+                    item.recipient = recipient;
+                    item.giftType = document.getElementById('igiftType_' + idx)?.value;
+                    item.recipientPhone = document.getElementById('irPhone_' + idx)?.value.trim() || '';
+                    item.hideName = document.getElementById('ihideName_' + idx)?.checked || false;
+                }
+                items.push(item);
+            }
+            data.donations.push({ 
+                id: Date.now(), 
+                donor, 
+                phone, 
+                date: new Date().toISOString().slice(0, 10), 
+                items 
+            });
+            saveData(); 
+            renderDashboard(); 
+            renderShares(); 
+            closeShareModal(); 
+            showToast(`✅ تم إضافة تبرع ${donor}`);
+        }
+
+        function deleteShare(idx) { 
+            if (confirm('حذف التبرع نهائياً؟')) { 
+                data.donations.splice(idx, 1); 
+                saveData(); 
+                renderDashboard(); 
+                renderShares(); 
+                showToast('تم الحذف بنجاح'); 
+            } 
+        }
+
+        // ===== الإعدادات العامة للحملة =====
+        function renderSettings() { 
+            let s = data.settings; 
+            const fields = {
+                targetShares: { label: 'المستهدف من الأسهم', icon: 'target', type: 'number' },
+                sharePrice: { label: 'سعر السهم (ريال)', icon: 'coins', type: 'number' },
+                eidDate: { label: 'تاريخ العيد', icon: 'calendar', type: 'date' },
+                whatsapp: { label: 'رقم الواتساب للتواصل', icon: 'phone', type: 'text' },
+                siteUrl: { label: 'رابط الموقع الرئيسي', icon: 'globe', type: 'url' },
+                manualDonations: { label: 'التبرعات المضافة يدوياً', icon: 'plus-circle', type: 'number' },
+                manualShares: { label: 'الأسهم المجمعة يدوياً', icon: 'package', type: 'number' }
+            }; 
+            
+            document.getElementById('settingsForm').innerHTML = Object.entries(fields).map(([k, f]) => {
+                return `
+                    <div>
+                        <label class="font-bold text-deepGreen flex items-center gap-1.5 mb-1 text-xs md:text-sm">
+                            <i data-lucide="${f.icon}" class="w-3.5 h-3.5 md:w-4 md:h-4 text-gold flex-shrink-0"></i>
+                            <span class="truncate">${f.label}</span>
+                        </label>
+                        <input type="${f.type}" class="form-input" id="set_${k}" value="${s[k] !== undefined ? s[k] : ''}">
+                    </div>
+                `;
+            }).join('') + `
+                <div class="col-span-2 mt-4">
+                    <button class="btn btn-primary" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+                </div>
+            `;
+            
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function saveSettings() { 
+            ['targetShares', 'sharePrice', 'eidDate', 'whatsapp', 'siteUrl', 'manualDonations', 'manualShares'].forEach(k => { 
+                data.settings[k] = document.getElementById('set_' + k).value; 
+            }); 
+            saveData(); 
+            renderDashboard();
+            showToast('تم حفظ الإعدادات بنجاح'); 
+        }
+
+        // ===== تصدير البيانات إلى ملف خارجي =====
+        function exportCampaignData() { 
+            const totalShares = calcTotalShares(); 
+            const exportData = {
+                exportedAt: new Date().toISOString(),
+                settings: data.settings,
+                stats: data.stats,
+                summary: {
+                    totalShares,
+                    targetShares: parseInt(data.settings.targetShares),
+                    remaining: Math.max(0, parseInt(data.settings.targetShares) - totalShares),
+                    sharePrice: parseInt(data.settings.sharePrice),
+                    totalRevenue: totalShares * parseInt(data.settings.sharePrice),
+                    totalDonors: data.donations.length
+                },
+                ticker: data.ticker.filter(t => t.active),
+                wallets: [...data.wallets],
+                donations: data.donations
+            }; 
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' }); 
+            const url = URL.createObjectURL(blob); 
+            const a = document.createElement('a'); 
+            a.href = url; 
+            a.download = `campaign-${new Date().toISOString().slice(0, 10)}.json`; 
+            document.body.appendChild(a); 
+            a.click(); 
+            document.body.removeChild(a); 
+            URL.revokeObjectURL(url); 
+            showToast('تم تصدير البيانات بنجاح'); 
+        }
+
+        // ===== مستمعو الأحداث =====
+        document.addEventListener('DOMContentLoaded', () => { 
+            if (typeof lucide !== 'undefined') lucide.createIcons(); 
+            document.getElementById('loginPass').addEventListener('keydown', e => { 
+                if (e.key === 'Enter') doLogin(); 
+            });
+            checkAutoLogin();
+        });
+    </script>
+</body>
+</html>

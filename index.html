@@ -1,0 +1,2814 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>مبادرة يد واحدة - حملة لحوم الأضاحي</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                cream: '#FDFCF7',
+                deepGreen: '#1B5E52',
+                teal: '#2E7D73',
+                mint: '#4CAF50',
+                gold: '#b8a673',
+                goldLight: '#ded4bb',
+                darkGold: '#73633c',
+                warm: '#805c43',
+                night: '#0F2E2A',
+            },
+            fontFamily: {
+                cairo: ['Cairo', 'sans-serif'],
+                tajawal: ['Tajawal', 'sans-serif'],
+            }
+        }
+    }
+}
+</script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Tajawal", sans-serif;
+    
+    background: #FDFCF7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+#videoCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+.content-layer {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== Ticker ===== */
+.ticker-wrap {
+    background: linear-gradient(90deg, #1B5E52, #2E7D73, #1B5E52);
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    z-index: 10;
+    border-bottom: 2px solid #b8a673;
+	direction:ltr;
+}
+.ticker-track {
+    display: inline-flex;
+    animation: tickerScrollRTL 30s linear infinite;
+}
+.ticker-item {
+    padding: 6px 30px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #ded4bb;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+@keyframes tickerScrollRTL {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+}
+
+/* ===== Toast ===== */
+.toast-container {
+    position: fixed;
+    top: 60px;
+    left: 12px;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+.toast-item {
+    background: linear-gradient(135deg, #1B5E52, #2E7D73);
+    color: #ded4bb;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(27,94,82,0.3);
+    border-right: 3px solid #b8a673;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: toastIn 0.5s ease, toastOut 0.5s ease 4.5s forwards;
+    max-width: 280px;
+    backdrop-filter: blur(8px);
+}
+.toast-item .toast-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b8a673, #ded4bb);
+    color: #1B5E52;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+@keyframes toastIn {
+    from { opacity: 0; transform: translateX(-50px) scale(0.9); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes toastOut {
+    from { opacity: 1; transform: translateX(0) scale(1); }
+    to { opacity: 0; transform: translateX(-50px) scale(0.9); }
+}
+
+/* ===== Hero ===== */
+.hero-dense {
+    background: linear-gradient(180deg, rgba(27,94,82,0.92) 0%, rgba(15,46,42,0.96) 100%);
+    position: relative;
+    overflow: hidden;
+}
+.hero-dense::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('img/1.png') center/cover;
+    opacity: 0.25;
+    mix-blend-mode: overlay;
+}
+ 
+
+.gold-glow {
+    color: #ded4bb;
+    text-shadow: 0 0 20px rgba(201,168,76,0.5), 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* ===== Typewriter ===== */
+.typewriter-container {
+    min-height: 28px;
+    margin: 12px 0;
+    text-align: center;
+}
+.typewriter-text {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ded4bb;
+    direction: rtl;
+    display: inline;
+}
+.typewriter-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 20px;
+    background: #b8a673;
+    margin-right: 4px;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* ===== Lucide Icons ===== */
+.lucide {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    display: inline-block;
+}
+.story-copy-icon .lucide {
+    width: 12px;
+    height: 12px;
+}
+.tier-icon .lucide {
+    width: 1.6rem;
+    height: 1.6rem;
+}
+.share-btn .lucide,
+.sticky-cta-dense button .lucide,
+.cert-btn .lucide,
+.form-btn .lucide {
+    width: 1.1em;
+    height: 1.1em;
+}
+.ticker-item .lucide {
+    width: 0.85em;
+    height: 0.85em;
+}
+.comparison-label .lucide {
+    width: 0.9em;
+    height: 0.9em;
+}
+.goal-icon {
+    width: 3rem;
+    height: 3rem;
+    color: #b8a673;
+    filter: drop-shadow(0 0 12px rgba(201,168,76,0.5));
+    margin-bottom: 6px;
+}
+
+/* ===== Gift Donation ===== */
+.gift-toggle {
+    display: flex;
+    justify-content: center;
+}
+.toggle-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+.toggle-label input {
+    display: none;
+}
+.toggle-slider {
+    width: 48px;
+    height: 26px;
+    background: #ccc;
+    border-radius: 13px;
+    position: relative;
+    transition: background 0.3s;
+    flex-shrink: 0;
+}
+.toggle-slider::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.toggle-label input:checked + .toggle-slider {
+    background: linear-gradient(135deg, #1B5E52, #2E7D73);
+}
+.toggle-label input:checked + .toggle-slider::after {
+    transform: translateX(22px);
+}
+.toggle-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1B5E52;
+}
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #666;
+    cursor: pointer;
+}
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #1B5E52;
+    cursor: pointer;
+}
+
+/* ===== Invite Toggle ===== */
+.invite-toggle-group {
+    display: flex;
+    gap: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #ded4bb;
+    background: #f5f5f0;
+}
+.invite-radio-label {
+    flex: 1;
+    text-align: center;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #666;
+    user-select: none;
+}
+.invite-radio-label input { display: none; }
+.invite-radio-label.active {
+    background: linear-gradient(135deg, #1B5E52, #2E7D73);
+    color: #fff;
+}
+.invite-template-box {
+    background: #faf8f0;
+    border: 2px solid #ded4bb;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 0.85rem;
+    color: #333;
+    line-height: 1.8;
+    text-align: right;
+    direction: rtl;
+    width: 100%;
+    font-family: 'Tajawal', sans-serif;
+    resize: none;
+}
+.invite-template-box:focus {
+    outline: none;
+    border-color: #b8a673;
+}
+
+/* ===== Counter ===== */
+.counter-box {
+    background: linear-gradient(135deg, #d9e8e6, #f6f5ed);
+    border: 2px solid rgba(201,168,76,0.3);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    backdrop-filter: blur(4px);
+}
+.counter-box .number {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #2E7D73;
+    line-height: 1;
+    font-family: 'Tajawal', sans-serif;
+}
+.counter-box .label {
+    color: #4CAF50;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.counter-box .sub {
+    color: #888;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.progress-static {
+    height: 10px;
+    background: #eee;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+.progress-static .bar {
+    height: 100%;
+    background: linear-gradient(90deg, #b8a673, #2E7D73);
+    border-radius: 5px;
+    width: 71%;
+}
+
+/* ===== Countdown ===== */
+.countdown-box {
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(46,125,115,0.1));
+    border: 2px solid rgba(201,168,76,0.4);
+    border-radius: 20px;
+    padding: 18px;
+    text-align: center;
+    margin-top: 16px;
+}
+.countdown-box .count-title {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #b8a673;
+    text-shadow: 0 0 15px rgba(201,168,76,0.4);
+    margin-bottom: 10px;
+}
+.countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+.countdown-cell {
+    background: linear-gradient(135deg, #fff, #fdf8e8);
+    border-radius: 12px;
+    padding: 10px 4px;
+    border: 1.5px solid #b8a673;
+    box-shadow: 0 2px 12px rgba(201,168,76,0.2);
+}
+.countdown-cell .count-val {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #1B5E52;
+    font-family: 'Tajawal', sans-serif;
+    line-height: 1;
+    text-shadow: 0 0 10px rgba(46,125,115,0.25);
+}
+.countdown-cell .count-unit {
+    font-size: 0.65rem;
+    color: #888;
+    font-weight: 700;
+    margin-top: 4px;
+}
+.countdown-urgent {
+    font-size: 0.8rem;
+    color: #b8a673;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+/* ===== Dense Cards ===== */
+.dense-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid rgba(201,168,76,0.3);
+    box-shadow: 0 4px 20px rgba(27,94,82,0.08), 0 1px 3px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+.dense-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #b8a673, #2E7D73);
+}
+.dense-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(27,94,82,0.15);
+}
+
+/* ===== Share Value ===== */
+.share-lead {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #1B5E52;
+    margin-bottom: 12px;
+    position: relative;
+}
+.share-lead::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #b8a673, #ded4bb);
+    margin: 8px auto 0;
+    border-radius: 2px;
+}
+.share-price {
+    text-align: center;
+    margin-bottom: 16px;
+}
+.share-price .amount {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #b8a673;
+    line-height: 1;
+    font-family: 'Tajawal', sans-serif;
+}
+.share-price .currency {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #73633c;
+}
+.share-price .per {
+    font-size: 0.9rem;
+    color: #888;
+    font-weight: 500;
+}
+
+.tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+.tier-card {
+    background: linear-gradient(135deg, #fff 0%, #faf8f0 100%);
+    border: 2px solid #ded4bb;
+    border-radius: 14px;
+    padding: 14px 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+.tier-card:hover {
+    border-color: #b8a673;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(201,168,76,0.2);
+}
+.tier-card .tier-name {
+    font-size: 1rem;
+	font-family: 'Cairo', sans-serif;
+    font-weight: 900;
+    color: #1B5E52;
+    margin-bottom: 4px;
+    background: linear-gradient(120deg, rgba(201,168,76,0.2) 0%, rgba(201,168,76,0.2) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 40%;
+    background-position: 0 88%;
+    padding: 0 4px;
+    display: inline-block;
+}
+.tier-donate-btn {
+    margin-top: 8px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: none;
+    background: linear-gradient(135deg, #1B5E52, #2E7D73);
+    color: white;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+.tier-donate-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(27,94,82,0.3);
+}
+.tier-card .tier-count {
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+.tier-card .tier-price {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #b8a673;
+    font-family: 'Tajawal', sans-serif;
+}
+.tier-card .tier-icon {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* ===== Messenger Stories Payment ===== */
+.stories-row {
+    display: flex;
+    gap: 8px;
+    padding: 8px 4px 16px;
+}
+
+.story-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    cursor: pointer;
+}
+.story-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: white;
+    position: relative;
+    border: 3px solid #ded4bb;
+    box-shadow: 0 4px 15px rgba(27,94,82,0.15);
+    transition: all 0.3s ease;
+	margin-bottom:7px;
+}
+.story-item:hover .story-avatar {
+    transform: scale(1.08);
+    border-color: #b8a673;
+    box-shadow: 0 6px 20px rgba(201,168,76,0.3);
+}
+.story-avatar::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #b8a673;
+    border-right-color: #b8a673;
+    animation: storySpin 3s linear infinite;
+}
+@keyframes storySpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.story-name {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1B5E52;
+    text-align: center;
+    line-height: 1.3;
+    max-width: 150px;
+}
+.story-number {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #2E7D73;
+    direction: ltr;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f5f5f0;
+    padding: 3px 8px;
+    border-radius: 20px;
+    border: 1px solid #ded4bb;
+}
+.story-copy-icon {
+    width: 22px;
+    height: 22px;
+    background: #1B5E52;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+.story-copy-icon:hover {
+    background: #b8a673;
+    transform: scale(1.15);
+}
+.story-copy-icon svg {
+    display: block;
+}
+
+/* ===== Live Map ===== */
+.map-section {
+    background: linear-gradient(135deg, rgba(27,94,82,0.03), rgba(201,168,76,0.05));
+    border-radius: 20px;
+    padding: 20px;
+    border: 2px solid rgba(201,168,76,0.2);
+}
+.map-title {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1B5E52;
+    margin-bottom: 16px;
+}
+.map-title span {
+    color: #b8a673;
+}
+.map-container {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+}
+.map-container svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 4px 12px rgba(27,94,82,0.15));
+}
+.map-region {
+    fill: rgba(46,125,115,0.15);
+    stroke: #2E7D73;
+    stroke-width: 1.5;
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+.map-region:hover {
+    fill: rgba(46,125,115,0.35);
+    stroke: #b8a673;
+    stroke-width: 2;
+}
+.map-dot {
+    fill: #b8a673;
+    animation: mapPulse 2s ease-in-out infinite;
+}
+@keyframes mapPulse {
+    0%, 100% { r: 4; opacity: 0.8; }
+    50% { r: 7; opacity: 0.4; }
+}
+.map-label {
+    font-size: 11px;
+    font-weight: 700;
+    fill: #1B5E52;
+    text-anchor: middle;
+    font-family: 'Cairo', sans-serif;
+}
+.map-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 16px;
+}
+.map-stat {
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ded4bb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.map-stat .stat-num {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #b8a673;
+    font-family: 'Tajawal', sans-serif;
+}
+.map-stat .stat-num2 {
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #b8a673;
+    font-family: 'Cairo', sans-serif;
+}
+.map-stat .stat-label {
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* ===== Quick Form ===== */
+.quick-form {
+    background: linear-gradient(135deg, rgba(27,94,82,0.06), rgba(201,168,76,0.08));
+    border-radius: 20px;
+    padding: 20px;
+    border: 2px solid rgba(201,168,76,0.3);
+}
+.quick-form-title {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #1B5E52;
+    margin-bottom: 4px;
+}
+.quick-form-sub {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 16px;
+}
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.form-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #ded4bb;
+    border-radius: 12px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.95rem;
+    color: #1B5E52;
+    background: white;
+    transition: all 0.3s;
+}
+.form-input:focus {
+    outline: none;
+    border-color: #b8a673;
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.2);
+}
+.form-input::placeholder {
+    color: #aaa;
+    font-weight: 500;
+}
+.form-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #1B5E52, #2E7D73);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(27,94,82,0.25);
+}
+.form-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(27,94,82,0.35);
+}
+
+/* ===== Before/After Slider ===== */
+.slider-section {
+    background: linear-gradient(135deg, rgba(27,94,82,0.05), rgba(201,168,76,0.05));
+    border-radius: 20px;
+    padding: 20px;
+    border: 2px solid rgba(201,168,76,0.2);
+}
+.slider-title {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1B5E52;
+    margin-bottom: 14px;
+}
+.slider-title span {
+    color: #b8a673;
+}
+.comparison-container {
+    position: relative;
+    width: 100%;
+	height:270px;
+    max-width: 400px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+	
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    aspect-ratio: 16/10;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+.comparison-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+	background: linear-gradient(90deg, #1B5E52, #2E7D73, #1B5E52);
+}
+.comparison-handle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    background: #b8a673;
+    transform: translateX(-50%);
+    z-index: -1;
+}
+.comparison-handle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 40px;
+    height: 100%;
+    transform: translateX(-50%);
+    cursor: ew-resize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+.comparison-handle-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background:  #1B5E52;
+    border: 2px solid white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 900;
+    font-size: 18px;
+}
+.comparison-labels {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px;
+    pointer-events: none;
+    z-index: 5;
+}
+.comparison-label {
+    background: rgba(27,94,82,0.85);
+    color: #ded4bb;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+}
+
+/* ===== Share Badge Section ===== */
+.share-badge-section {
+    background: linear-gradient(135deg, #1B5E52, #2E7D73);
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+    border: 2px solid #b8a673;
+    position: relative;
+    overflow: hidden;
+}
+.share-badge-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 60%);
+    pointer-events: none;
+}
+.share-badge-title {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #ded4bb;
+    margin-bottom: 6px;
+    position: relative;
+}
+.share-badge-sub {
+    font-size: 0.9rem;
+    color: rgba(232,213,163,0.8);
+    margin-bottom: 16px;
+    position: relative;
+}
+.share-badge-preview {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto 16px;
+    border-radius: 16px;
+    border: 2px solid #b8a673;
+    background: #FDFCF7;
+    position: relative;
+}
+.share-social-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+.share-btn {
+    padding: 10px 18px;
+    border-radius: 50px;
+     
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s;
+}
+.share-btn-wa {
+    background: #25D366;
+    color: white;
+    box-shadow: 0 4px 15px rgba(37,211,102,0.3);
+}
+.share-btn-wa:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+}
+.share-btn-tw {
+    background: #1DA1F2;
+    color: white;
+    box-shadow: 0 4px 15px rgba(29,161,242,0.3);
+}
+.share-btn-tw:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(29,161,242,0.4);
+}
+.share-btn-copy {
+    background: linear-gradient(135deg, #b8a673, #ded4bb);
+    color: #1B5E52;
+    box-shadow: 0 4px 15px rgba(201,168,76,0.3);
+}
+.share-btn-copy:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(201,168,76,0.4);
+}
+
+/* ===== Certificate Modal ===== */
+.cert-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(6px);
+}
+.cert-overlay.active {
+    display: flex;
+}
+.cert-modal {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    border: 3px solid #b8a673;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+}
+.cert-modal::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+.cert-modal h3 {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #1B5E52;
+    margin-bottom: 8px;
+}
+.cert-modal .cert-sub {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+.cert-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #ded4bb;
+    border-radius: 12px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 12px;
+    color: #1B5E52;
+    font-weight: 700;
+}
+.cert-input::placeholder {
+    color: #aaa;
+    font-weight: 500;
+}
+.cert-input:focus {
+    outline: none;
+    border-color: #b8a673;
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.2);
+}
+.cert-preview {
+    width: 100%;
+    border-radius: 12px;
+    border: 2px solid #ded4bb;
+    margin: 12px 0;
+    background: #faf8f0;
+}
+.cert-btn {
+    background: linear-gradient(135deg, #1B5E52, #2E7D73);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 900;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.cert-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(27,94,82,0.3);
+}
+.cert-close {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f5f5f0;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 18px;
+    transition: all 0.2s;
+}
+.cert-close:hover {
+    background: #fee;
+    color: #c00;
+}
+
+/* ===== Impact Text ===== */
+.impact-text {
+    font-size: 1.05rem;
+    line-height: 2;
+    color: #333;
+    position: relative;
+    padding: 18px;
+    background: linear-gradient(135deg, rgba(27,94,82,0.05), rgba(201,168,76,0.05));
+    border-radius: 16px;
+    border-right: 4px solid #b8a673;
+}
+.impact-highlight {
+    background: linear-gradient(120deg, rgba(201,168,76,0.2) 0%, rgba(201,168,76,0.2) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 40%;
+    background-position: 0 88%;
+    padding: 0 4px;
+    font-weight: 700;
+    color: #1B5E52;
+}
+
+/* ===== Sticky CTA ===== */
+.sticky-cta-dense {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #1B5E52, #2E7D73);
+    padding: 12px 16px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-top: 3px solid #b8a673;
+    box-shadow: 0 -8px 30px rgba(27,94,82,0.3);
+}
+.sticky-cta-dense button {
+    background: linear-gradient(135deg, #b8a673, #ded4bb);
+    color: #1B5E52;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 900;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(201,168,76,0.4);
+    transition: all 0.3s ease;
+    font-family: 'Cairo', sans-serif;
+    white-space: nowrap;
+}
+.sticky-cta-dense button:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 8px 25px rgba(201,168,76,0.5);
+}
+.sticky-cta-dense .price-tag {
+    color: #ded4bb;
+    font-weight: 700;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+/* ===== Gold Divider ===== */
+.gold-divider {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #b8a673, #ded4bb, #b8a673, transparent);
+    margin: 8px 0;
+    border-radius: 2px;
+}
+
+/* ===== Badge ===== */
+.badge-gold {
+    background: linear-gradient(135deg, #b8a673, #ded4bb);
+    color: #1B5E52;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    display: inline-block;
+}
+
+/* ===== Section Header ===== */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.section-header h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #1B5E52;
+    white-space: nowrap;
+}
+.section-header .line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, #b8a673, transparent);
+}
+
+/* ===== Floating Decor ===== */
+.float-decor {
+    animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(3deg); }
+}
+
+/* ===== Scroll Reveal ===== */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== Burst Particle ===== */
+.burst-particle {
+    position: fixed;
+    pointer-events: none;
+    border-radius: 50%;
+    animation: burst 1s ease-out forwards;
+    z-index: 9999;
+}
+@keyframes burst {
+    0% { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+
+/* ===== Shares & Gift Radio Grids ===== */
+.shares-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.shares-card {
+    background: #fff;
+    border: 2px solid #ded4bb;
+    border-radius: 12px;
+    padding: 10px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+    font-family: 'Tajawal', sans-serif;
+    color: #1B5E52;
+}
+.shares-card:hover {
+    border-color: #b8a673;
+}
+.shares-card.active {
+    background: linear-gradient(135deg, #1B5E52, #2E7D73);
+    border-color: #1B5E52;
+    color: white;
+    box-shadow: 0 4px 12px rgba(27,94,82,0.2);
+}
+.shares-card .shares-number {
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+.shares-card .shares-unit {
+    font-size: 0.75rem;
+    font-weight: 700;
+    opacity: 0.9;
+    margin-bottom: 4px;
+}
+.shares-card .shares-price {
+    font-size: 0.72rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+.shares-card.active .shares-price {
+    opacity: 0.95;
+    color: #f7e7c4;
+}
+
+.gift-type-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.gift-type-card {
+    background: #fff;
+    border: 2px solid #ded4bb;
+    border-radius: 12px;
+    padding: 10px 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    user-select: none;
+    font-family: 'Tajawal', sans-serif;
+    color: #1B5E52;
+}
+.gift-type-card:hover {
+    border-color: #b8a673;
+}
+.gift-type-card.active {
+    background: linear-gradient(135deg, #1B5E52, #2E7D73);
+    border-color: #1B5E52;
+    color: white;
+    box-shadow: 0 4px 12px rgba(27,94,82,0.2);
+}
+.gift-type-card .gift-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    color: #b8a673;
+    transition: all 0.3s ease;
+}
+.gift-type-card.active .gift-icon {
+    color: #f7e7c4;
+}
+.gift-type-card span {
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 640px) {
+    .counter-box .number { font-size: 2.5rem; }
+    .counter-box .label { font-size: 1rem; }
+    .ticker-item { font-size: 11px; padding: 5px 15px; }
+    .impact-text { font-size: 0.95rem; line-height: 1.9; padding: 14px; }
+    .dense-card { border-radius: 12px; }
+    .tier-grid { gap: 6px; }
+    .tier-card { padding: 10px 4px; }
+    .tier-card .tier-name { font-size: 0.9rem; }
+    .tier-card .tier-count { font-size: 0.7rem; }
+    .tier-card .tier-price { font-size: 0.85rem; }
+    .tier-card .tier-icon { font-size: 1.4rem; }
+    .tier-donate-btn { font-size: 0.7rem; padding: 4px 10px; }
+    .story-avatar { width: 70px; height: 70px; }
+    .story-name { font-size: 0.77rem; }
+    .story-number { font-size: 0.7rem; }
+    .stories-row { gap: 4px; }
+    .share-price .amount { font-size: 2.2rem; }
+    .share-lead { font-size: 1.1rem; }
+    .sticky-cta-dense { padding: 10px 12px; }
+    .sticky-cta-dense button { padding: 8px 18px; font-size: 0.9rem; gap: 6px; }
+    .sticky-cta-dense button .lucide { width: 1rem; height: 1rem; }
+    .sticky-cta-dense .price-tag { font-size: 0.75rem; }
+    .countdown-cell .count-val { font-size: 1.3rem; }
+    .countdown-cell .count-unit { font-size: 0.6rem; }
+    .map-stats { grid-template-columns: repeat(2, 1fr); }
+    .toast-container { top: 50px; left: 8px; }
+    .toast-item { max-width: 240px; font-size: 12px; padding: 8px 12px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .comparison-handle-circle { width: 40px; height: 40px; font-size: 16px; }
+    .comparison-label { font-size: 0.7rem; padding: 4px 10px; }
+    .typewriter-text { font-size: 0.9rem; }
+    .share-btn { padding: 8px 14px; font-size: 0.8rem; }
+    .invite-radio-label { font-size: 0.75rem; padding: 8px 10px; }
+    .invite-template-box { font-size: 0.78rem; padding: 10px; font-family: 'Tajawal', sans-serif; }
+    .form-input { padding: 9px 12px; font-size: 0.85rem; }
+    .form-input::placeholder { font-size: 0.8rem; }
+    .cert-input { padding: 9px 12px; font-size: 0.88rem; margin-bottom: 8px; }
+    .cert-input::placeholder { font-size: 0.82rem; }
+    
+    /* New Radio Grids Mobile */
+    .shares-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+    .shares-card {
+        padding: 8px 4px;
+    }
+    .shares-card .shares-number {
+        font-size: 1.2rem;
+    }
+    .shares-card .shares-unit {
+        font-size: 0.7rem;
+    }
+    .shares-card .shares-price {
+        font-size: 0.65rem;
+    }
+    
+    .gift-type-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+    .gift-type-card {
+        padding: 8px 4px;
+        gap: 4px;
+    }
+    .gift-type-card .gift-icon {
+        width: 1rem;
+        height: 1rem;
+    }
+    .gift-type-card span {
+        font-size: 0.72rem;
+    }
+    .form-btn {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+        border-radius: 10px;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 380px) {
+    .sticky-cta-dense button { padding: 7px 14px; font-size: 0.82rem; }
+    .sticky-cta-dense .price-tag { font-size: 0.7rem; }
+    .tier-grid { gap: 4px; }
+    .tier-card { padding: 8px 3px; border-radius: 10px; }
+    .countdown-grid { gap: 4px; }
+    .countdown-cell { padding: 8px 2px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Certificate Modal -->
+<div class="cert-overlay" id="certOverlay">
+    <div class="cert-modal">
+        <button class="cert-close" onclick="closeCert()">×</button>
+        <h3><i class="ml-1" style="color:#b8a673;" data-lucide="badge-check"></i> بطاقة شكر رقمية</h3>
+        <p class="cert-sub">أدخل اسمك لإنشاء بطاقة شكر خاصة بك</p>
+        <input type="text" class="cert-input" id="certName" placeholder="اسمك الكريم" maxlength="20">
+        <input type="number" class="cert-input" id="certShares" placeholder="عدد الأسهم" min="1" value="1" style="width:50%;display:inline-block;">
+        <canvas id="certCanvas" class="cert-preview" width="360" height="240"></canvas>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <button class="cert-btn" onclick="generateCert()">
+                <i data-lucide="eye"></i>
+                معاينة
+            </button>
+            <button class="cert-btn" style="background:linear-gradient(135deg,#b8a673,#ded4bb);color:#1B5E52;" onclick="downloadCert()">
+                <i data-lucide="download"></i>
+                تحميل
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Invitation Modal -->
+<div class="cert-overlay" id="inviteOverlay">
+    <div class="cert-modal">
+        <button class="cert-close" onclick="closeInvite()">×</button>
+        <h3><i class="ml-1" style="color:#b8a673;" data-lucide="heart"></i> شارك الأجر وقدم دعوة تبرع</h3>
+        <p class="cert-sub">اختر الطريقة المناسبة لك لدعوة من تحب للمساهمة في عمل الخير</p>
+
+        <div class="invite-toggle-group mb-3">
+            <label class="invite-radio-label active" id="textModeLabel" onclick="setInviteMode('text')">
+                <input type="radio" name="inviteMode" value="text" checked>
+                <span>منشور نصي</span>
+            </label>
+            <label class="invite-radio-label" id="imageModeLabel" onclick="setInviteMode('image')">
+                <input type="radio" name="inviteMode" value="image">
+                <span>تصميم صورة</span>
+            </label>
+        </div>
+
+        <input type="text" class="cert-input" id="senderName" placeholder="اكتب اسمك الكريم هنا (اختياري)" maxlength="50">
+        <input type="text" class="cert-input" id="inviteeName" placeholder="اكتب اسم الشخص المدعو هنا" maxlength="50">
+        <p id="inviteeError" style="color:#c00;font-size:0.75rem;font-weight:600;margin-bottom:8px;display:none;">يرجى كتابة اسم المدعو أولاً لتتمكن من المشاركة.</p>
+
+        <div id="inviteTextContent">
+            <textarea class="invite-template-box mb-3" id="inviteTemplate" rows="4" readonly></textarea>
+            <div class="share-social-row">
+                <button class="share-btn share-btn-copy" onclick="copyInviteText()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ النص
+                </button>
+                <button class="share-btn share-btn-wa" onclick="shareInviteWA()">
+                    <i data-lucide="message-circle"></i> واتساب
+                </button>
+                <button class="share-btn share-btn-tw" onclick="shareInviteX()">
+                    <i data-lucide="message-square"></i> إكس
+                </button>
+                <button class="share-btn share-btn-copy" onclick="shareInviteSMS()">
+                    <i data-lucide="send"></i> SMS
+                </button>
+            </div>
+        </div>
+
+        <div id="inviteImageContent" style="display:none;">
+            <div id="inviteImagePreview" class="cert-preview" style="height:180px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1B5E52,#2E7D73);color:#ded4bb;font-weight:700;font-size:1rem;text-align:center;padding:10px;">
+                جاري تصميم بطاقتك الخاصة بدقة عالية، يرجى الانتظار لحظات...
+            </div>
+            <div class="share-social-row">
+                <button class="share-btn share-btn-copy" onclick="previewInviteImage()">
+                    <i data-lucide="eye"></i> معاينة التصميم
+                </button>
+                <button class="share-btn share-btn-wa" onclick="downloadInviteImage()">
+                    <i data-lucide="download"></i> تحميل الصورة المحدثة
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<canvas id="videoCanvas"></canvas>
+
+<div class="content-layer">
+
+<!-- Ticker -->
+<div class="ticker-wrap">
+    <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- Hero -->
+<header class="hero-dense pt-8 pb-16 px-4">
+    <div class="max-w-lg mx-auto text-center relative z-10">
+        <div class="mb-4 flex justify-center">
+            <img src="img/logo.jpg" alt="شعار الحملة" class="w-36 h-36 md:w-40 md:h-40 object-cover rounded-2xl drop-shadow-lg" style="border:3px solid #fff;padding:2px;cursor:pointer;" onclick="onLogoClick()" id="logoImg">
+        </div>
+        <div class="badge-gold mb-3" >مبادرة خيرية</div>
+        <h1 class="text-3xl md:text-4xl font-black gold-glow mb-2 tracking-tight" style="font-family: 'Cairo', sans-serif;">مبادرة يد واحدة</h1>
+        <p class="text-goldLight/80 text-lg font-medium mb-1">يد الجميع واحدة تكفي</p>
+        <div class="gold-divider max-w-xs mx-auto my-4"></div>
+        <h2 class="text-xl md:text-2xl font-bold text-white/90 mb-4 leading-relaxed" style="font-family: 'Cairo', sans-serif;">
+            المساهمة في حملة لحوم الأضاحي
+        </h2>
+
+        <!-- Typewriter Effect -->
+        <div class="typewriter-container">
+            <span class="typewriter-text" id="typewriter"></span><span class="typewriter-cursor"></span>
+        </div>
+
+        <!-- Counter -->
+        <div class="counter-box max-w-xs mx-auto">
+            <div class="mb-1 flex justify-center">
+                <i data-lucide="crosshair" class="goal-icon"></i>
+            </div>
+            <p class="label text-sm mb-2">الهدف المتبقي</p>
+            <div class="number" id="heroCounter">288</div>
+            <p class="label mt-1">سهم</p>
+            <div class="progress-static mt-3">
+                <div class="bar" id="progressBarFill"></div>
+            </div>
+            <p class="sub mt-2" id="progressText">تم جمع 712 سهم من 1000 سهم</p>
+        </div>
+
+        <!-- Countdown -->
+        <div class="countdown-box max-w-xs mx-auto">
+            <p class="count-title"><i class="ml-1" data-lucide="clock"></i> تبقى للعيد</p>
+            <div class="countdown-grid" id="countdownGrid">
+                <div class="countdown-cell"><div class="count-val" id="cdDays">00</div><div class="count-unit">يوم</div></div>
+                <div class="countdown-cell"><div class="count-val" id="cdHours">00</div><div class="count-unit">ساعة</div></div>
+                <div class="countdown-cell"><div class="count-val" id="cdMins">00</div><div class="count-unit">دقيقة</div></div>
+                <div class="countdown-cell"><div class="count-val" id="cdSecs">00</div><div class="count-unit">ثانية</div></div>
+            </div>
+            <p class="countdown-urgent"><i class="ml-1" data-lucide="zap"></i> كل سهم يصل قبل فجر العيد</p>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="max-w-lg mx-auto px-4 -mt-6 relative z-10 space-y-5 pb-32">
+
+    <!-- Impact -->
+    <section class="dense-card p-5 reveal">
+        <div class="section-header">
+            <h3 style="font-family: 'Cairo', sans-serif;"><i class="ml-1 text-green-600" data-lucide="heart"></i> رسالة الحملة</h3>
+            <div class="line"></div>
+        </div>
+        <div class="space-y-4">
+            <div class="impact-text">
+                <p class="leading-loose">
+                    هناك <span class="impact-highlight">أيتام</span> فقدوا اليد التي كانت تحمل لهم فرحة الأضحية وباتوا ينتظرون العيد بقلوبٍ ناقصةٍ وموائدَ فارغةٍ وهناك <span class="impact-highlight">أسرٌ عزيزة النفس</span> تخفي حاجتها خلف الصبر والكتمان.
+                </p>
+            </div>
+           <!-- <div class="impact-text" style="border-right-color: #4CAF50; background: linear-gradient(135deg, rgba(76,175,80,0.05), rgba(201,168,76,0.05));">
+                <p class="leading-loose font-bold text-deepGreen">
+                    كن سببًا في جبر خاطرهم فأعظم الصدقات تلك التي تحفظ كرامة المحتاج وتزرع الفرح في قلب يتيم.
+                </p>
+            </div> -->
+        </div>
+    </section>
+
+    <!-- Before/After Slider -->
+    <section class="slider-section reveal">
+        <p class="slider-title"style="font-family: 'Cairo', sans-serif;" >  <span>أرسم معنا  </span> إبتسامة  </p>
+        <div class="comparison-container" id="comparisonContainer">
+            <!-- "After" image (full background) -->
+            <img src="img/smile.png" alt="بعد" class="comparison-img" id="afterImg" style="object-fit: contain;  ">
+            <!-- "Before" image (clipped top layer) -->
+            <img src="img/sad.png" alt="قبل" class="comparison-img" id="beforeImg" style="object-fit: contain;  clip-path: inset(0 50% 0 0);">
+            <!-- Draggable handle -->
+            <div class="comparison-handle" id="comparisonHandle">
+                <div class="comparison-handle-circle"><i data-lucide="arrow-right-left"></i>  
+</div>
+            </div>
+            
+            
+        </div>
+         
+    </section>
+
+    <!-- Live Map -->
+    <section class="map-section reveal">
+        <p class="map-title" style="font-family: 'Cairo', sans-serif;"><i class="ml-1" data-lucide="map-pin"></i> خريطة <span>التبرعات الحية</span></p>
+        <div class="map-container">
+            <svg viewBox="0 0 300 350" xmlns="http://www.w3.org/2000/svg">
+                <path class="map-region" d="M80,40 Q120,20 160,35 Q200,30 230,55 Q250,80 240,110 Q235,140 210,160 Q190,180 170,175 Q140,170 120,150 Q100,130 90,100 Q85,70 80,40Z" />
+                <path class="map-region" d="M90,160 Q110,155 130,165 Q150,175 160,195 Q165,220 150,240 Q130,255 110,250 Q90,240 85,220 Q80,200 85,180 Q88,170 90,160Z" />
+                <path class="map-region" d="M170,180 Q190,175 210,185 Q225,200 220,225 Q215,250 195,260 Q175,265 165,245 Q160,225 165,205 Q168,190 170,180Z" />
+                <path class="map-region" d="M200,260 Q220,255 235,270 Q245,290 235,310 Q220,325 200,320 Q185,310 185,290 Q188,275 200,260Z" />
+                <circle class="map-dot" cx="150" cy="80" />
+                <circle class="map-dot" cx="120" cy="200" style="animation-delay:0.5s"/>
+                <circle class="map-dot" cx="190" cy="220" style="animation-delay:1s"/>
+                <circle class="map-dot" cx="210" cy="290" style="animation-delay:1.5s"/>
+                <text class="map-label" x="150" y="105">صنعاء</text>
+                <text class="map-label" x="120" y="225">حجة</text>
+                <text class="map-label" x="190" y="245">تعز</text>
+                <text class="map-label" x="210" y="315">عدن</text>
+            </svg>
+        </div>
+        <div class="map-stats">
+            <div class="map-stat">
+                <div class="stat-num" id="statOrphans">142</div>
+                <div class="stat-label">متبرع حتى الان</div>
+            </div>
+            <div class="map-stat">
+                <div class="stat-num2" id="MostCity">صنعاء</div>
+                <div class="stat-label">الاكثر تبرعا</div>
+            </div>
+           
+        </div>
+    </section>
+
+    <!-- Share Value -->
+    <section class="dense-card p-5 reveal">
+        <p class="share-lead"style="font-family: 'Cairo', sans-serif;" >كن أحد هؤلاء</p>
+        <div class="share-price">
+            <p class="per">قيمة السهم الواحد</p>
+            <div class="flex items-baseline justify-center gap-1 mt-1">
+                <span class="amount" id="sharePriceAmount">1000</span>
+                <span class="currency">ريال</span>
+            </div>
+        </div>
+        <div class="tier-grid" id="tierGrid">
+            <div class="tier-card" data-tier-shares="1">
+                <span class="tier-icon"><i data-lucide="award" style="color:#cd7f32;"></i></span>
+                <span class="tier-name">مساهم</span>
+                <p class="tier-count">سهم واحد</p>
+                <p class="tier-price">1,000 ريال</p>
+                <button class="tier-donate-btn" onclick="tierDonate(1)">تبرع</button>
+            </div>
+            <div class="tier-card" data-tier-shares="5">
+                <span class="tier-icon"><i data-lucide="award" style="color:#a0a0a0;"></i></span>
+                <span class="tier-name">مبادر</span>
+                <p class="tier-count">5 أسهم</p>
+                <p class="tier-price">5,000 ريال</p>
+                <button class="tier-donate-btn" onclick="tierDonate(5)">تبرع</button>
+            </div>
+            <div class="tier-card" data-tier-shares="10">
+                <span class="tier-icon"><i data-lucide="trophy" style="color:#b8a673;"></i></span>
+                <span class="tier-name">سابق</span>
+                <p class="tier-count">10 أسهم</p>
+                <p class="tier-price">10,000 ريال</p>
+                <button class="tier-donate-btn" onclick="tierDonate(10)">تبرع</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Stories -->
+    <section class="dense-card p-4 reveal">
+	<div class="section-header">
+            <h3 style="font-family: 'Cairo', sans-serif;"><i class="ml-1" data-lucide="heart"></i> حسابات الحملة</h3>
+            <div class="line"></div>
+        </div>
+        <div class="stories-row" id="walletsContainer"></div>
+                <span class="story-name"> كريمي أم فلوس </span>
+                <div class="story-number">
+                    <span dir="ltr">3170928457</span>
+                    <span class="story-copy-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
+                </div>
+            </div>
+            <div class="story-item" onclick="copyNumber('774261416', this)">
+                <div class="story-avatar" style="background: linear-gradient(135deg, #4CAF50, #2E7D73); padding:0; overflow:hidden;">
+                    <img src="img/jeep.jpg" alt="جيب" class="w-full h-full rounded-full object-cover">
+                </div>
+                <span class="story-name">محفظة جيب </span>
+                <div class="story-number">
+                    <span dir="ltr">774261416</span>
+                    <span class="story-copy-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
+                </div>
+            </div>
+            <div class="story-item" onclick="copyNumber('774261416', this)">
+                <div class="story-avatar" style="background: linear-gradient(135deg, #C9A84C, #8B6914); padding:0; overflow:hidden;">
+                    <img src="img/floosk.jpg" alt="فلوسك" class="w-full h-full rounded-full object-cover">
+                </div>
+                <span class="story-name">محفظة فلوسك </span>
+                <div class="story-number">
+                    <span dir="ltr">774261416</span>
+                    <span class="story-copy-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
+                </div>
+            </div>
+             
+        </div>
+    </section>
+
+    <!-- Quick Form (Toggle Widget) -->
+    <section class="quick-form reveal" id="quickFormSection">
+        <div id="quickFormToggle" onclick="toggleQuickForm()" style="cursor:pointer;">
+            <p class="quick-form-title" style="font-family: 'Cairo', sans-serif;"><i class="ml-1" data-lucide="hand-heart"></i> أريد التبرع</p>
+            <p class="quick-form-sub">سنقوم بالتواصل معك مباشرة لإتمام مساهمتك</p>
+        </div>
+        <div id="quickFormContent" style="display:none;">
+            <input type="hidden" id="formShares" value="1">
+            <div class="shares-grid">
+                <div class="shares-card active" data-shares="1" onclick="selectShares(this, '1')">
+                    <div class="shares-number">1</div>
+                    <div class="shares-unit">سهم</div>
+                    <div class="shares-price">1,000 ريال</div>
+                </div>
+                <div class="shares-card" data-shares="2" onclick="selectShares(this, '2')">
+                    <div class="shares-number">2</div>
+                    <div class="shares-unit">سهم</div>
+                    <div class="shares-price">2,000 ريال</div>
+                </div>
+                <div class="shares-card" data-shares="3" onclick="selectShares(this, '3')">
+                    <div class="shares-number">3</div>
+                    <div class="shares-unit">أسهم</div>
+                    <div class="shares-price">3,000 ريال</div>
+                </div>
+                <div class="shares-card" data-shares="5" onclick="selectShares(this, '5')">
+                    <div class="shares-number">5</div>
+                    <div class="shares-unit">أسهم</div>
+                    <div class="shares-price">5,000 ريال</div>
+                </div>
+                <div class="shares-card" data-shares="10" onclick="selectShares(this, '10')">
+                    <div class="shares-number">10</div>
+                    <div class="shares-unit">أسهم</div>
+                    <div class="shares-price">10,000 ريال</div>
+                </div>
+            </div>
+            <div class="form-grid">
+                <input type="text" class="form-input" id="formName" placeholder="الاسم (اختياري)">
+                <input type="tel" class="form-input" id="formPhone" placeholder="رقم الهاتف (اختياري)" dir="ltr">
+            </div>
+            <button class="form-btn" onclick="submitQuickForm()">
+                <i data-lucide="send"></i>
+                أرسل طلب التبرع
+            </button>
+        </div>
+    </section>
+
+    <!-- Gift Donation -->
+    <section class="dense-card p-5 reveal" id="giftSection">
+        <div class="section-header">
+            <h3 style="font-family: 'Cairo', sans-serif;"><i class="ml-1" data-lucide="heart"></i> أهدي الثواب لمن تحب</h3>
+            <div class="line"></div>
+        </div>
+        <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+            يمكنك تقديم هذا السهم كصدقة جارية أو إهداء باسمك أو باسم من تحب وتوثيق ذلك بشهادة شكر رقمية
+        </p>
+
+        <div class="gift-toggle mb-4">
+            <label class="toggle-label">
+                <input type="checkbox" id="isGift" onchange="toggleGiftForm()">
+                <span class="toggle-slider"></span>
+                <span class="toggle-text">تبرع كإهداء / عن ميت</span>
+            </label>
+        </div>
+
+        <div id="giftFormContent" style="display:none;">
+            <div class="mb-3">
+                <label class="block mb-2" style="font-family: 'Tajawal', sans-serif; color: #1B5E52; font-weight: 700; font-size: 0.88rem;">اسم المتبرع:</label>
+                <input type="text" class="form-input" id="donorName" placeholder="مثال: محمد بن عبد الله" maxlength="70">
+            </div>
+            <div class="mb-3">
+                <label class="block mb-2" style="font-family: 'Tajawal', sans-serif; color: #1B5E52; font-weight: 700; font-size: 0.88rem;">نوع التبرع عن:</label>
+                <input type="hidden" id="giftType" value="">
+                <div class="gift-type-grid">
+                    <div class="gift-type-card" onclick="selectGiftType(this, 'myself')">
+                        <i data-lucide="user" class="gift-icon"></i>
+                        <span>عن نفسي</span>
+                    </div>
+                    <div class="gift-type-card" onclick="selectGiftType(this, 'parents')">
+                        <i data-lucide="users" class="gift-icon"></i>
+                        <span>عن والديّ</span>
+                    </div>
+                    <div class="gift-type-card" onclick="selectGiftType(this, 'deceased')">
+                        <i data-lucide="heart" class="gift-icon"></i>
+                        <span>عن ميت</span>
+                    </div>
+                    <div class="gift-type-card" onclick="selectGiftType(this, 'other')">
+                        <i data-lucide="user-plus" class="gift-icon"></i>
+                        <span>عن شخص آخر</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-grid">
+                <input type="text" class="form-input" id="giftRecipientName" placeholder="مثال: المغفور له بإذن الله أحمد الخطيب" maxlength="70">
+                <input type="tel" class="form-input" id="recipientPhone" placeholder="9665xxxxxxxxx+" dir="ltr">
+            </div>
+            <label class="checkbox-label mb-4">
+                <input type="checkbox" id="hideDonorName">
+                إخفاء اسم المتبرع في الشهادة العامة
+            </label>
+            <button class="form-btn" onclick="submitGiftDonation()">
+                <i data-lucide="badge-check"></i>
+                تأكيد التبرع وإصدار الشهادة
+            </button>
+        </div>
+    </section>
+
+   
+
+    <!-- Instructions 
+    <section class="dense-card p-5 reveal">
+        <div class="section-header">
+            <h3 style="font-family: 'Cairo', sans-serif;"><i class="ml-1" data-lucide="clipboard-list"></i> خطوات التبرع</h3>
+            <div class="line"></div>
+        </div>
+        <div class="space-y-3">
+            <div class="flex items-start gap-3">
+                <div class="w-7 h-7 rounded-full bg-teal text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">1</div>
+                <p class="text-sm text-gray-700 leading-relaxed">اختر طريقة الدفع المناسبة وانسخ رقم الحساب</p>
+            </div>
+            <div class="flex items-start gap-3">
+                <div class="w-7 h-7 rounded-full bg-teal text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">2</div>
+                <p class="text-sm text-gray-700 leading-relaxed">قم بتحويل المبلغ (1000 ريال لكل سهم)</p>
+            </div>
+            <div class="flex items-start gap-3">
+                <div class="w-7 h-7 rounded-full bg-teal text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">3</div>
+                <p class="text-sm text-gray-700 leading-relaxed">اضغط على زر الواتساب وأرسل لقطة التحويل</p>
+            </div>
+        </div>
+    </section>-->
+	
+	 <!-- Share Badge / Tell People -->
+    <section class="share-badge-section reveal">
+        <p class="share-badge-title" style="font-family: 'Cairo', sans-serif;"><i class="ml-1" data-lucide="megaphone"></i> أخبر الناس عن حملتنا</p>
+        <p class="share-badge-sub">
+شارك الحملة مع أصدقائك</p>
+        <canvas id="shareCanvas" class="share-badge-preview" width="320" height="180"></canvas>
+        <div class="share-social-row">
+            <button class="share-btn share-btn-wa" onclick="shareWhatsApp()">
+                <i data-lucide="message-circle"></i>
+                واتساب
+            </button>
+            <button class="share-btn share-btn-tw" onclick="shareTwitter()">
+                <i data-lucide="message-square"></i>
+                تويتر
+            </button>
+            <button class="share-btn share-btn-copy" onclick="shareCopyLink()">
+                <i data-lucide="link"></i>
+                نسخ الرابط
+            </button>
+        </div>
+    </section>
+
+    <!-- Visual Gallery 
+    <section class="dense-card p-4 reveal overflow-hidden">
+        <div class="section-header px-1">
+            <h3><i class="ml-1" data-lucide="moon"></i><i class="mr-1" style="color:#b8a673;" data-lucide="star"></i> زينة العيد</h3>
+            <div class="line"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+            <div class="rounded-xl overflow-hidden h-32 relative">
+                <img src="https://kimi-web-img.moonshot.cn/img/c8.alamy.com/85410cdbec7f06f11c02aac833e7f8bad27c80e1.jpg" alt="خروف العيد" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-deepGreen/60 to-transparent"></div>
+                <p class="absolute bottom-2 right-2 text-white text-xs font-bold">أضحى مبارك</p>
+            </div>
+            <div class="rounded-xl overflow-hidden h-32 relative">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.mymodefa.com/b248bcb85ff61f8e0f83a4c390e2a77addf3e287.jpg" alt="فانوس العيد" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-deepGreen/60 to-transparent"></div>
+                <p class="absolute bottom-2 right-2 text-white text-xs font-bold">فانوس العيد</p>
+            </div>
+            <div class="rounded-xl overflow-hidden h-32 relative col-span-2">
+                <img src="https://kimi-web-img.moonshot.cn/img/static.vecteezy.com/e2defdfbb512ff99b321f36d9cfb79e163c9fb36.jpg" alt="عيد الأضحى" class="w-full h-full object-cover object-top">
+                <div class="absolute inset-0 bg-gradient-to-t from-deepGreen/70 to-transparent"></div>
+                <p class="absolute bottom-2 right-2 text-white text-sm font-bold">كل عام وأنتم بخير</p>
+            </div>
+        </div>
+    </section>-->
+
+</main>
+
+<!-- Sticky CTA -->
+<div class="sticky-cta-dense">
+    
+    <button onclick="openWhatsApp()">
+        <i data-lucide="message-circle"></i>
+       ساهم الآن
+    </button>
+    <button onclick="openInvite()" style="background:transparent;border:2px solid #b8a673;color:#ded4bb;padding:8px 14px;border-radius:50px;font-weight:700;font-size:0.85rem;cursor:pointer;font-family:'Cairo',sans-serif;white-space:nowrap;">
+        <i class="ml-1" data-lucide="heart"></i> قدم دعوة تبرع لغيرك
+    </button>
+</div>
+
+</div><!-- end content-layer -->
+
+<script src="data.js"></script>
+<script>
+// ========================
+// CANVAS VIDEO BACKGROUND
+// ========================
+const canvas = document.getElementById('videoCanvas');
+const ctx = canvas.getContext('2d');
+let width, height;
+let particles = [];
+let lanterns = [];
+let geoPatterns = [];
+
+function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+    constructor() { this.reset(); }
+    reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = (Math.random() - 0.5) * 0.3;
+        this.opacity = Math.random() * 0.6 + 0.2;
+        this.color = Math.random() > 0.5 ? '#b8a673' : '#ded4bb';
+        this.life = Math.random() * 200 + 100;
+    }
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.life--;
+        if (this.life <= 0 || this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+    }
+    draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity * (this.life / 300);
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
+class Lantern {
+    constructor() { this.reset(); }
+    reset() {
+        this.x = Math.random() * width;
+        this.y = height + 50;
+        this.size = Math.random() * 20 + 15;
+        this.speedY = Math.random() * 0.5 + 0.2;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.sway = Math.random() * 0.02;
+        this.swayOffset = Math.random() * Math.PI * 2;
+        this.opacity = Math.random() * 0.3 + 0.1;
+    }
+    update() {
+        this.y -= this.speedY;
+        this.x += Math.sin(this.y * this.sway + this.swayOffset) * 0.5 + this.speedX;
+        if (this.y < -100) this.reset();
+    }
+    draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = '#b8a673';
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#ded4bb';
+        ctx.beginPath();
+        ctx.ellipse(this.x, this.y, this.size * 0.6, this.size * 0.8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = this.opacity * 0.5;
+        ctx.fillStyle = '#ded4bb';
+        ctx.beginPath();
+        ctx.ellipse(this.x, this.y, this.size * 0.3, this.size * 0.4, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
+class GeoPattern {
+    constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 40 + 20;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotSpeed = (Math.random() - 0.5) * 0.005;
+        this.opacity = Math.random() * 0.04 + 0.02;
+    }
+    update() {
+        this.rotation += this.rotSpeed;
+        this.y -= 0.15;
+        if (this.y < -100) { this.y = height + 100; this.x = Math.random() * width; }
+    }
+    draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.strokeStyle = '#b8a673';
+        ctx.lineWidth = 1;
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.beginPath();
+        for (let i = 0; i < 8; i++) {
+            const angle = (Math.PI * 2 * i) / 8;
+            const r = this.size;
+            ctx.lineTo(Math.cos(angle) * r, Math.sin(angle) * r);
+        }
+        ctx.closePath();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 0, this.size * 0.4, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+    }
+}
+
+for (let i = 0; i < 60; i++) particles.push(new Particle());
+for (let i = 0; i < 8; i++) lanterns.push(new Lantern());
+for (let i = 0; i < 6; i++) geoPatterns.push(new GeoPattern());
+
+function animate() {
+    ctx.clearRect(0, 0, width, height);
+    const grad = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width);
+    grad.addColorStop(0, 'rgba(253,252,247,0)');
+    grad.addColorStop(1, 'rgba(232,213,163,0.03)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
+    geoPatterns.forEach(g => { g.update(); g.draw(); });
+    particles.forEach(p => { p.update(); p.draw(); });
+    lanterns.forEach(l => { l.update(); l.draw(); });
+    requestAnimationFrame(animate);
+}
+animate();
+
+// ========================
+// RENDER TICKER
+// ========================
+function renderTicker() {
+    const track = document.getElementById('tickerTrack');
+    if (!track) return;
+    const active = (data.ticker || []).filter(t => t.active);
+    let html = '';
+    for (let i = 0; i < 2; i++) {
+        active.forEach(t => {
+            html += `<span class="ticker-item"><i data-lucide="${t.icon || 'star'}"></i> ${t.message}</span>`;
+        });
+    }
+    track.innerHTML = html + html; // duplicate for scroll animation
+    if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
+}
+
+// ========================
+// RENDER WALLETS
+// ========================
+function renderWallets() {
+    const container = document.getElementById('walletsContainer');
+    if (!container) return;
+    const wallets = data.wallets || [];
+    container.innerHTML = wallets.map(w => `
+        <div class="story-item" onclick="copyNumber('${w.account}', this)">
+            <div class="story-avatar" style="background: linear-gradient(135deg, #1B5E52, #2E7D73);">
+                <span style="font-size:1.5rem;">💰</span>
+            </div>
+            <span class="story-name">${w.name}</span>
+            <div class="story-number">
+                <span dir="ltr">${w.account}</span>
+                <span class="story-copy-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
+            </div>
+        </div>
+    `).join('');
+    if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
+}
+
+// ========================
+// SYNC UI FROM DATA
+// ========================
+function syncDataToUI() {
+    const totalShares = calcTotalShares();
+    const target = parseInt(data.settings.targetShares, 10) || 0;
+    const remaining = Math.max(0, target - totalShares);
+    const sharePrice = parseInt(data.settings.sharePrice, 10) || 0;
+
+    // Hero counter
+    animateCounter(document.getElementById('heroCounter'), remaining);
+
+    // Progress bar & text
+    const pct = target > 0 ? Math.min(100, (totalShares / target) * 100) : 0;
+    const bar = document.getElementById('progressBarFill');
+    if (bar) bar.style.width = pct + '%';
+    const progressText = document.getElementById('progressText');
+    if (progressText) progressText.textContent = `تم جمع ${totalShares.toLocaleString()} سهم من ${target.toLocaleString()} سهم`;
+
+    // Share price
+    const priceEl = document.getElementById('sharePriceAmount');
+    if (priceEl) priceEl.textContent = sharePrice.toLocaleString();
+
+    // Tier cards
+    document.querySelectorAll('.tier-card[data-tier-shares]').forEach(card => {
+        const shares = parseInt(card.dataset.tierShares, 10) || 1;
+        const priceEl = card.querySelector('.tier-price');
+        if (priceEl) priceEl.textContent = (shares * sharePrice).toLocaleString() + ' ريال';
+        const countEl = card.querySelector('.tier-count');
+        if (countEl) countEl.textContent = shares === 1 ? 'سهم واحد' : `${shares} أسهم`;
+        const btn = card.querySelector('.tier-donate-btn');
+        if (btn) btn.setAttribute('onclick', `tierDonate(${shares})`);
+    });
+
+    // Quick form shares prices
+    document.querySelectorAll('.shares-card[data-shares]').forEach(card => {
+        const num = parseInt(card.dataset.shares, 10) || 1;
+        const priceEl = card.querySelector('.shares-price');
+        if (priceEl) priceEl.textContent = (num * sharePrice).toLocaleString() + ' ريال';
+    });
+
+    // Donors count
+    const donorsCount = data.donations.length + (parseInt(data.settings.manualDonations, 10) || 0);
+    animateCounter(document.getElementById('statOrphans'), donorsCount);
+
+    // Update eid date for countdown
+    if (data.settings.eidDate) {
+        eidDate = new Date(data.settings.eidDate + 'T05:00:00');
+    }
+
+    // Render ticker & wallets
+    renderTicker();
+    renderWallets();
+
+    // Redraw share badge
+    drawShareBadge();
+}
+
+// ========================
+// 11. TYPEWRITER EFFECT
+// ========================
+const typewriterPhrases = [
+    'كل سهم يجبر خاطر يتيم...',
+    'كن سبباً في فرحة عيدهم...',
+    'يد الجميع واحدة تكفي...',
+    'تبرعك اليوم يُغيّر حياة...'
+];
+let typewriterIndex = 0;
+let typewriterChar = 0;
+let typewriterDeleting = false;
+const typewriterEl = document.getElementById('typewriter');
+
+function typewriterTick() {
+    const phrase = typewriterPhrases[typewriterIndex];
+    if (typewriterDeleting) {
+        typewriterChar--;
+        typewriterEl.textContent = phrase.substring(0, typewriterChar);
+        if (typewriterChar === 0) {
+            typewriterDeleting = false;
+            typewriterIndex = (typewriterIndex + 1) % typewriterPhrases.length;
+        }
+    } else {
+        typewriterChar++;
+        typewriterEl.textContent = phrase.substring(0, typewriterChar);
+        if (typewriterChar === phrase.length) {
+            typewriterDeleting = true;
+            setTimeout(typewriterTick, 2000);
+            return;
+        }
+    }
+    setTimeout(typewriterTick, typewriterDeleting ? 50 : 120);
+}
+setTimeout(typewriterTick, 1000);
+
+// ========================
+// TOAST NOTIFICATIONS
+// ========================
+let lastDonationCount = 0;
+let lastDonationId = 0;
+
+function showLiveToast(donor, shares) {
+    const container = document.getElementById('toastContainer');
+    const div = document.createElement('div');
+    div.className = 'toast-item';
+    div.innerHTML = `
+        <div class="toast-avatar">${donor.charAt(0)}</div>
+        <div>
+            <div style="font-size:12px;color:#fff;font-weight:800;">${donor}</div>
+            <div style="font-size:11px;color:#ded4bb;">تبرع بـ ${shares} أسهم ✨</div>
+        </div>
+    `;
+    container.appendChild(div);
+    setTimeout(() => div.remove(), 5000);
+}
+
+function initLastDonation() {
+    lastDonationCount = data.donations.length;
+    lastDonationId = data.donations.length > 0 ? data.donations[data.donations.length - 1].id : 0;
+}
+
+function checkForNewDonations() {
+    const stored = JSON.parse(localStorage.getItem(DB_KEY));
+    if (!stored || !stored.donations) return;
+    const newDonations = stored.donations;
+    if (newDonations.length > lastDonationCount) {
+        const newOnes = newDonations.filter(d => d.id > lastDonationId);
+        newOnes.forEach(d => {
+            const total = d.items.reduce((s, i) => s + i.qty, 0);
+            showLiveToast(d.donor, total);
+        });
+        lastDonationCount = newDonations.length;
+        lastDonationId = newDonations[newDonations.length - 1].id;
+        // تحديث البيانات العامة وتحديث الواجهة
+        refreshData();
+        syncDataToUI();
+    }
+}
+
+// Show most recent donation on load after a moment
+setTimeout(() => {
+    initLastDonation();
+    const donations = data.donations;
+    if (donations.length > 0) {
+        const last = donations[donations.length - 1];
+        const total = last.items.reduce((s, i) => s + i.qty, 0);
+        showLiveToast(last.donor, total);
+    }
+}, 3000);
+
+// Poll for new donations every 12 seconds
+setInterval(checkForNewDonations, 12000);
+
+// ========================
+// EID COUNTDOWN
+// ========================
+let eidDate = new Date('2026-06-26T05:00:00');
+function updateCountdown() {
+    const now = new Date();
+    const diff = eidDate - now;
+    if (diff <= 0) {
+        document.getElementById('cdDays').textContent = '00';
+        document.getElementById('cdHours').textContent = '00';
+        document.getElementById('cdMins').textContent = '00';
+        document.getElementById('cdSecs').textContent = '00';
+        return;
+    }
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById('cdDays').textContent = String(d).padStart(2, '0');
+    document.getElementById('cdHours').textContent = String(h).padStart(2, '0');
+    document.getElementById('cdMins').textContent = String(m).padStart(2, '0');
+    document.getElementById('cdSecs').textContent = String(s).padStart(2, '0');
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// ========================
+// 19. BEFORE/AFTER SLIDER
+// ========================
+const compContainer = document.getElementById('comparisonContainer');
+const beforeImg = document.getElementById('beforeImg');
+const compHandle = document.getElementById('comparisonHandle');
+let isDragging = false;
+
+function setSliderPosition(x) {
+    const rect = compContainer.getBoundingClientRect();
+    let pos = ((x - rect.left) / rect.width) * 100;
+    pos = Math.max(5, Math.min(95, pos));
+    beforeImg.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
+    compHandle.style.left = pos + '%';
+}
+
+compHandle.addEventListener('mousedown', () => isDragging = true);
+compHandle.addEventListener('touchstart', () => isDragging = true, {passive:true});
+window.addEventListener('mouseup', () => isDragging = false);
+window.addEventListener('touchend', () => isDragging = false);
+window.addEventListener('mousemove', (e) => { if (isDragging) setSliderPosition(e.clientX); });
+window.addEventListener('touchmove', (e) => { if (isDragging) setSliderPosition(e.touches[0].clientX); }, {passive:true});
+compContainer.addEventListener('click', (e) => setSliderPosition(e.clientX));
+
+// ========================
+// 15. QUICK FORM
+// ========================
+function toggleQuickForm() {
+    const content = document.getElementById('quickFormContent');
+    const toggle = document.getElementById('quickFormToggle');
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        toggle.style.cursor = 'default';
+    } else {
+        content.style.display = 'none';
+        toggle.style.cursor = 'pointer';
+    }
+}
+
+function submitQuickForm() {
+    const shares = document.getElementById('formShares').value;
+    const name = document.getElementById('formName').value.trim() || 'مُحسِن';
+    const phone = document.getElementById('formPhone').value.trim() || 'غير متوفر';
+    const waPhone = data.settings.whatsapp || '967775064424';
+    const msg = `مرحباً، أنا ${name} ورقمي ${phone} — أرغب في التبرع بـ ${shares} أسهم في حملة لحوم الأضاحي.`;
+    window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function selectShares(elem, value) {
+    document.getElementById('formShares').value = value;
+    const cards = document.querySelectorAll('.shares-card');
+    cards.forEach(c => c.classList.remove('active'));
+    elem.classList.add('active');
+}
+
+function selectGiftType(elem, value) {
+    document.getElementById('giftType').value = value;
+    const cards = document.querySelectorAll('.gift-type-card');
+    cards.forEach(c => c.classList.remove('active'));
+    elem.classList.add('active');
+}
+
+// ========================
+// GIFT DONATION
+// ========================
+function toggleGiftForm() {
+    const checked = document.getElementById('isGift').checked;
+    const content = document.getElementById('giftFormContent');
+    content.style.display = checked ? 'block' : 'none';
+    if (checked) setTimeout(() => lucide.createIcons(), 50);
+}
+
+function submitGiftDonation() {
+    const isGift = document.getElementById('isGift').checked;
+    const donorName = document.getElementById('donorName').value.trim();
+    const giftType = document.getElementById('giftType').value;
+    const recipientName = document.getElementById('giftRecipientName').value.trim();
+    const recipientPhone = document.getElementById('recipientPhone').value.trim();
+    const hideName = document.getElementById('hideDonorName').checked;
+
+    if (!isGift) {
+        showMiniToast('الرجاء تفعيل خيار التبرع كإهداء');
+        return;
+    }
+    if (!donorName) {
+        showMiniToast('الرجاء إدخال اسم المتبرع');
+        return;
+    }
+    if (!giftType) {
+        showMiniToast('الرجاء اختيار نوع التبرع');
+        return;
+    }
+    if (!recipientName) {
+        showMiniToast('عذراً، يرجى إدخال اسم المُهدى إليه لتتمكن من إصدار الشهادة بصيغة الإهداء.');
+        return;
+    }
+
+    const displayName = hideName ? 'فاعل خير' : donorName;
+    const waPhone = data.settings.whatsapp || '967775064424';
+    const msg = `مرحباً، أنا ${donorName} — أرغب في التبرع كإهداء ${giftType === 'deceased' ? 'عن روح' : giftType === 'parents' ? 'عن والديّ' : giftType === 'myself' ? 'عن نفسي' : 'عن'} ${recipientName}. هاتف المستلم: ${recipientPhone || 'غير متوفر'}`;
+    window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+    showMiniToast('تقبل الله طاعتكم. تم تسجيل السهم وتوليد شهادة الإهداء بنجاح.');
+}
+
+// ========================
+// 18. SHARE BADGE
+// ========================
+function drawShareBadge() {
+    const cvs = document.getElementById('shareCanvas');
+    const c = cvs.getContext('2d');
+    const w = cvs.width, h = cvs.height;
+
+    // Background
+    c.fillStyle = '#FDFCF7';
+    c.fillRect(0, 0, w, h);
+
+    // Gold border
+    c.strokeStyle = '#b8a673';
+    c.lineWidth = 3;
+    c.strokeRect(6, 6, w-12, h-12);
+
+    // Title
+    c.fillStyle = '#1B5E52';
+    c.font = 'bold 18px Cairo';
+    c.textAlign = 'center';
+    c.fillText('🤝 مبادرة يد واحدة', w/2, 38);
+
+    c.fillStyle = '#b8a673';
+    c.font = 'bold 14px Cairo';
+    c.fillText('حملة لحوم الأضاحي', w/2, 58);
+
+    // Divider
+    c.strokeStyle = '#ded4bb';
+    c.lineWidth = 2;
+    c.beginPath();
+    c.moveTo(40, 68);
+    c.lineTo(w-40, 68);
+    c.stroke();
+
+    // Stats
+    const remaining = Math.max(0, parseInt(data.settings.targetShares) - calcTotalShares());
+    const sharePrice = parseInt(data.settings.sharePrice) || 0;
+    c.fillStyle = '#333';
+    c.font = '12px Cairo';
+    c.fillText(`متبقي ${remaining} سهم — السهم بـ ${sharePrice.toLocaleString()} ريال`, w/2, 90);
+
+    c.fillStyle = '#1B5E52';
+    c.font = 'bold 13px Cairo';
+    c.fillText('🐑 كن سبباً في فرحة يتيم هذا العيد', w/2, 112);
+
+    // CTA
+    c.fillStyle = '#b8a673';
+    c.font = 'bold 11px Cairo';
+    c.fillText('شارك الحملة مع أصدقائك', w/2, 138);
+
+    // URL
+    const siteUrl = (data.settings.siteUrl || 'https://yad-wahda.org/donate').replace(/^https?:\/\//, '');
+    c.fillStyle = '#888';
+    c.font = '10px Tajawal';
+    c.fillText(siteUrl, w/2, 158);
+}
+drawShareBadge();
+
+function getShareText() {
+    const remaining = Math.max(0, parseInt(data.settings.targetShares) - calcTotalShares());
+    const sharePrice = parseInt(data.settings.sharePrice) || 0;
+    return `🤝 انضم معي في مبادرة يد واحدة — حملة لحوم الأضاحي! متبقي ${remaining} سهم، السهم بـ ${sharePrice.toLocaleString()} ريال. كن سبباً في فرحة يتيم هذا العيد 🐑✨`;
+}
+
+function shareWhatsApp() {
+    window.open(`https://wa.me/?text=${encodeURIComponent(getShareText())}`, '_blank');
+}
+
+function shareTwitter() {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(getShareText())}`, '_blank');
+}
+
+function shareCopyLink() {
+    navigator.clipboard.writeText(getShareText()).then(() => {
+        showMiniToast('تم نسخ رسالة المشاركة!');
+    });
+}
+
+// ========================
+// CERTIFICATE MODAL
+// ========================
+function openCert() {
+    document.getElementById('certOverlay').classList.add('active');
+    generateCert();
+}
+function closeCert() {
+    document.getElementById('certOverlay').classList.remove('active');
+}
+
+function generateCert() {
+    const name = document.getElementById('certName').value || 'المتبرع الكريم';
+    const shares = document.getElementById('certShares').value || '1';
+    const sharePrice = parseInt(data.settings.sharePrice, 10) || 1000;
+    const total = parseInt(shares) * sharePrice;
+    const cvs = document.getElementById('certCanvas');
+    const c = cvs.getContext('2d');
+    const w = cvs.width, h = cvs.height;
+
+    c.fillStyle = '#FDFCF7';
+    c.fillRect(0, 0, w, h);
+
+    c.strokeStyle = '#b8a673';
+    c.lineWidth = 4;
+    c.strokeRect(8, 8, w-16, h-16);
+    c.strokeStyle = '#ded4bb';
+    c.lineWidth = 2;
+    c.strokeRect(14, 14, w-28, h-28);
+
+    c.fillStyle = '#b8a673';
+    const corners = [[12,12],[w-24,12],[12,h-24],[w-24,h-24]];
+    corners.forEach(([x,y]) => {
+        c.beginPath();
+        c.arc(x+6, y+6, 4, 0, Math.PI*2);
+        c.fill();
+    });
+
+    c.fillStyle = '#1B5E52';
+    c.font = 'bold 22px Cairo';
+    c.textAlign = 'center';
+    c.fillText('مبادرة يد واحدة', w/2, 45);
+
+    c.fillStyle = '#b8a673';
+    c.font = 'bold 16px Cairo';
+    c.fillText('شهادة شكر وتقدير', w/2, 68);
+
+    c.strokeStyle = '#ded4bb';
+    c.lineWidth = 2;
+    c.beginPath();
+    c.moveTo(60, 78);
+    c.lineTo(w-60, 78);
+    c.stroke();
+
+    c.fillStyle = '#333';
+    c.font = '14px Cairo';
+    c.fillText('تُقدّم هذه البطاقة بكلّ امتنان إلى', w/2, 105);
+
+    c.fillStyle = '#1B5E52';
+    c.font = 'bold 20px Cairo';
+    c.fillText(name, w/2, 135);
+
+    c.fillStyle = '#666';
+    c.font = '13px Cairo';
+    c.fillText(`للمساهمة في حملة لحوم الأضاحي`, w/2, 158);
+    c.fillText(`بعدد ${shares} أسهم بمبلغ ${total.toLocaleString()} ريال`, w/2, 178);
+
+    c.font = '28px Cairo';
+    c.fillText('🐑', w/2, 208);
+
+    c.fillStyle = '#888';
+    c.font = '11px Cairo';
+    c.fillText('جزاك الله خيراً — كل عام وأنتم بخير', w/2, 228);
+}
+
+function downloadCert() {
+    const cvs = document.getElementById('certCanvas');
+    const link = document.createElement('a');
+    link.download = 'بطاقة-شكر-يد-واحدة.png';
+    link.href = cvs.toDataURL('image/png');
+    link.click();
+}
+
+document.getElementById('certName').addEventListener('input', generateCert);
+document.getElementById('certShares').addEventListener('input', generateCert);
+
+// ========================
+// INVITATION
+// ========================
+function openInvite() {
+    document.getElementById('inviteOverlay').classList.add('active');
+    document.getElementById('senderName').value = '';
+    document.getElementById('inviteeName').value = '';
+    document.getElementById('inviteeError').style.display = 'none';
+    setInviteMode('text');
+    updateInviteTemplate();
+    setTimeout(() => lucide.createIcons(), 100);
+}
+function closeInvite() {
+    document.getElementById('inviteOverlay').classList.remove('active');
+}
+
+function setInviteMode(mode) {
+    document.getElementById('textModeLabel').classList.toggle('active', mode === 'text');
+    document.getElementById('imageModeLabel').classList.toggle('active', mode === 'image');
+    document.getElementById('inviteTextContent').style.display = mode === 'text' ? 'block' : 'none';
+    document.getElementById('inviteImageContent').style.display = mode === 'image' ? 'block' : 'none';
+    if (mode === 'text') updateInviteTemplate();
+    if (mode === 'image') generateInviteImage();
+    setTimeout(() => lucide.createIcons(), 50);
+}
+
+let SITE_URL = 'https://yad-wahda.org/donate';
+
+function updateInviteTemplate() {
+    SITE_URL = data.settings.siteUrl || SITE_URL;
+    const sender = document.getElementById('senderName').value.trim() || 'محب الخير';
+    const recipient = document.getElementById('inviteeName').value.trim();
+    const template = `أخي الغالي ${recipient || '[...]'}، أحببت لك الخير ودعوتك لتكون جزءاً من هذا العطاء المتميز. يمكنك المساهمة والتبرع الآن عبر الرابط التالي:\n${SITE_URL}\nأخوك: ${sender}`;
+    document.getElementById('inviteTemplate').value = template;
+}
+
+document.getElementById('senderName').addEventListener('input', updateInviteTemplate);
+document.getElementById('inviteeName').addEventListener('input', updateInviteTemplate);
+
+function getInviteText() {
+    const recipient = document.getElementById('inviteeName').value.trim();
+    if (!recipient || recipient.length < 3) {
+        document.getElementById('inviteeError').style.display = 'block';
+        return null;
+    }
+    document.getElementById('inviteeError').style.display = 'none';
+    return document.getElementById('inviteTemplate').value;
+}
+
+function copyInviteText() {
+    const text = getInviteText();
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+        showMiniToast('تم نسخ نص الدعوة بنجاح إلى الحافظة!');
+    });
+}
+
+function shareInviteWA() {
+    const text = getInviteText();
+    if (!text) return;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function shareInviteX() {
+    const text = getInviteText();
+    if (!text) return;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function shareInviteSMS() {
+    const text = getInviteText();
+    if (!text) return;
+    window.open(`sms:?body=${encodeURIComponent(text)}`, '_blank');
+}
+
+function generateInviteImage() {
+    const preview = document.getElementById('inviteImagePreview');
+    const sender = document.getElementById('senderName').value.trim() || 'محب الخير';
+    const recipient = document.getElementById('inviteeName').value.trim();
+    if (!recipient || recipient.length < 3) {
+        preview.innerHTML = 'يرجى كتابة اسم المدعو أولاً';
+        preview.style.background = '#f5f5f0';
+        preview.style.color = '#666';
+        return;
+    }
+    preview.innerHTML = `<div style="text-align:center;line-height:2;position:relative;z-index:1;text-shadow:0 2px 8px rgba(0,0,0,0.5);">
+        <div style="font-size:1.2rem;font-weight:900;color:#fff;">${recipient}</div>
+        <div style="font-size:0.85rem;color:rgba(255,255,255,0.8);">مدعو من</div>
+        <div style="font-size:1.1rem;font-weight:700;color:#ded4bb;margin-top:2px;">${sender}</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:8px;">مبادرة يد واحدة - حملة لحوم الأضاحي</div>
+    </div>`;
+    preview.style.background = 'url(img/invitation.png) center/cover no-repeat';
+    preview.style.color = '#fff';
+}
+
+function previewInviteImage() {
+    const recipient = document.getElementById('inviteeName').value.trim();
+    if (!recipient || recipient.length < 3) {
+        document.getElementById('inviteeError').style.display = 'block';
+        return;
+    }
+    document.getElementById('inviteeError').style.display = 'none';
+    showMiniToast('جاري تصميم بطاقتك الخاصة بدقة عالية، يرجى الانتظار لحظات...');
+    setTimeout(() => showMiniToast('تم تصميم البطاقة بنجاح!'), 1500);
+}
+
+function downloadInviteImage() {
+    const recipient = document.getElementById('inviteeName').value.trim();
+    if (!recipient || recipient.length < 3) {
+        document.getElementById('inviteeError').style.display = 'block';
+        return;
+    }
+    document.getElementById('inviteeError').style.display = 'none';
+    const sender = document.getElementById('senderName').value.trim() || 'محب الخير';
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = 'img/invitation.png';
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || 800;
+        canvas.height = img.naturalHeight || 500;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        ctx.textAlign = 'center';
+        ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        ctx.shadowBlur = 6;
+        ctx.fillStyle = '#fff';
+        ctx.font = `bold ${Math.round(canvas.width * 0.055)}px Cairo`;
+        ctx.fillText(recipient, cx, cy - 20);
+        ctx.shadowBlur = 4;
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        ctx.font = `${Math.round(canvas.width * 0.028)}px Cairo`;
+        ctx.fillText('مدعو من', cx, cy + 25);
+        ctx.fillStyle = '#ded4bb';
+        ctx.font = `bold ${Math.round(canvas.width * 0.045)}px Cairo`;
+        ctx.fillText(sender, cx, cy + 65);
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.font = `${Math.round(canvas.width * 0.02)}px Cairo`;
+        ctx.fillText('مبادرة يد واحدة - حملة لحوم الأضاحي', cx, canvas.height - 30);
+        const link = document.createElement('a');
+        link.download = 'دعوة-تبرع-يد-واحدة.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showMiniToast('تم تحميل الصورة بنجاح!');
+    };
+    img.onerror = function() {
+        showMiniToast('عذراً، حدث خطأ أثناء معالجة الصورة. يرجى المحاولة مرة أخرى.');
+    };
+}
+
+// ========================
+// COUNTER ANIMATION
+// ========================
+function animateCounter(el, target, duration = 2000) {
+    if (!el) return;
+    let start = 0;
+    const increment = target / (duration / 16);
+    function update() {
+        start += increment;
+        if (start < target) {
+            el.textContent = Math.floor(start);
+            requestAnimationFrame(update);
+        } else {
+            el.textContent = target;
+        }
+    }
+    update();
+}
+
+// ========================
+// SCROLL REVEAL
+// ========================
+window.addEventListener('DOMContentLoaded', () => {
+    syncDataToUI();
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+    lucide.createIcons();
+});
+
+// Auto-refresh when returning to the tab
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        refreshData();
+        syncDataToUI();
+    }
+});
+
+// ========================
+// COPY & BURST
+// ========================
+function copyNumber(number, el) {
+    navigator.clipboard.writeText(number).then(() => {
+        const rect = el.querySelector('.story-avatar').getBoundingClientRect();
+        createBurst(rect.left + rect.width/2, rect.top + rect.height/2);
+        showMiniToast('تم نسخ الرقم!');
+    }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = number;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showMiniToast('تم نسخ الرقم!');
+    });
+}
+
+function showMiniToast(msg) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1B5E52;color:#ded4bb;padding:10px 24px;border-radius:30px;font-weight:700;font-size:14px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2);animation:fadeUp 2s ease-out forwards;';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2000);
+}
+
+function createBurst(x, y) {
+    const colors = ['#b8a673', '#ded4bb', '#2E7D73', '#4CAF50', '#1B5E52'];
+    for (let i = 0; i < 12; i++) {
+        const p = document.createElement('div');
+        p.className = 'burst-particle';
+        const size = Math.random() * 8 + 4;
+        const angle = (Math.PI * 2 * i) / 12;
+        const distance = Math.random() * 60 + 30;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.left = x + 'px';
+        p.style.top = y + 'px';
+        p.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+        p.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1000);
+    }
+}
+
+// ========================
+// WHATSAPP
+// ========================
+function tierDonate(shares) {
+    const waPhone = data.settings.whatsapp || '967775064424';
+    const sharePrice = parseInt(data.settings.sharePrice, 10) || 1000;
+    const total = shares * sharePrice;
+    const msg = `مرحباً، أرغب في التبرع بـ ${shares} أسهم بقيمة ${total.toLocaleString()} ريال في حملة لحوم الأضاحي.`;
+    window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function openWhatsApp() {
+    const phone = data.settings.whatsapp || '967775064424';
+    const message = `مرحباً، لقد قمت بالمساهمة في حملة لحوم الأضاحي لعدد (..) من الأسهم وأود إرسال لقطة التحويل.`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+}
+
+// ========================
+// SECRET ADMIN LINK (5 clicks on logo)
+// ========================
+let logoClickCount = 0;
+let logoTimer = null;
+function onLogoClick() {
+    logoClickCount++;
+    if (logoTimer) clearTimeout(logoTimer);
+    logoTimer = setTimeout(() => { logoClickCount = 0; }, 2000);
+    if (logoClickCount >= 5) {
+        logoClickCount = 0;
+        window.location.href = 'admin.html';
+    }
+}
+
+
+</script>
+
+</body>
+</html>
