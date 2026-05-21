@@ -309,7 +309,7 @@
             </div>
         </header>
 
-        <!-- شبكة الإحصائيات الحالية (3 أعمدة دائماً في الهواتف والشاشات الكبيرة) -->
+        <!-- شبكة الإحصائيات الحالية -->
         <div class="grid grid-cols-3 gap-4 mb-6" id="dashStats"></div>
 
         <!-- قسم إدارة التبرعات الكلية -->
@@ -341,7 +341,31 @@
             </div>
         </div>
 
-        <!-- قسم الإعدادات العامة (عرض حقلين في الصف دائماً في شاشات الهاتف والكمبيوتر) -->
+        <!-- قسم إدارة شريط الأخبار -->
+        <div class="card mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-deepGreen flex items-center gap-2">
+                    <i data-lucide="megaphone" class="w-5 h-5 text-gold"></i>
+                    إدارة شريط الأخبار (Ticker)
+                </h3>
+                <button class="btn btn-primary btn-sm" onclick="addTickerItem()">➕ إضافة خبر</button>
+            </div>
+            <div id="tickerList" class="space-y-2"></div>
+        </div>
+
+        <!-- قسم إدارة المحافظ -->
+        <div class="card mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-deepGreen flex items-center gap-2">
+                    <i data-lucide="wallet" class="w-5 h-5 text-gold"></i>
+                    إدارة حسابات الدفع (المحافظ)
+                </h3>
+                <button class="btn btn-primary btn-sm" onclick="addWalletItem()">➕ إضافة محفظة</button>
+            </div>
+            <div id="walletList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+
+        <!-- قسم الإعدادات العامة -->
         <div class="card mb-6">
             <h3 class="text-lg font-bold text-deepGreen mb-4 flex items-center gap-2">
                 <i data-lucide="settings" class="w-5 h-5 text-gold"></i>
@@ -350,11 +374,39 @@
             <div class="grid grid-cols-2 gap-2 md:gap-5" id="settingsForm"></div>
         </div>
 
+        <!-- قسم دعوات المشاركة -->
+        <div class="card mb-6 p-0 overflow-hidden">
+            <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-cream/10">
+                <h3 class="text-lg font-bold text-deepGreen flex items-center gap-2">
+                    <i data-lucide="users" class="w-5 h-5 text-gold"></i>
+                    دعوات المشاركة المرصودة
+                </h3>
+                <span class="badge badge-gold" id="invitationCount">0</span>
+            </div>
+            <div class="overflow-x-auto" style="max-height: 400px;">
+                <table class="data-table w-full">
+                    <thead>
+                        <tr>
+                            <th>المرسل</th>
+                            <th>المدعو</th>
+                            <th>النوع</th>
+                            <th>التاريخ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invitationsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- أزرار الإجراءات السفلية -->
-        <div class="flex justify-end mb-8">
+        <div class="flex justify-end mb-8 gap-3">
+            <button class="btn btn-danger" onclick="if(confirm('هل أنت متأكد من مسح جميع بيانات localStorage؟')){localStorage.clear(); location.reload();}">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                <span>مسح جميع البيانات</span>
+            </button>
             <button class="btn btn-gold" onclick="exportCampaignData()">
                 <i data-lucide="download" class="w-4 h-4"></i>
-                <span>تصدير بيانات الحملة بالكامل (JSON)</span>
+                <span>تصدير بيانات الحملة (JSON)</span>
             </button>
         </div>
     </div>
@@ -445,6 +497,9 @@
             renderDashboard(); 
             renderShares(); 
             renderSettings();
+            renderTickerManager();
+            renderWalletManager();
+            renderInvitations();
         }
 
         // تحديث لوحة الإحصائيات
@@ -454,21 +509,25 @@
             const remaining = Math.max(0, target - totalShares);
             const totalRevenue = totalShares * (parseInt(data.settings.sharePrice, 10) || 0);
             
-            // عدد عمليات التبرع الكلي (المدخل الفعلي + المضاف يدوياً دفعة واحدة)
             const totalDonors = data.donations.length + (parseInt(data.settings.manualDonations, 10) || 0); 
+            const pendingCount = data.donations.filter(d => d.items.some(i => i.status === 'pending')).length;
             
             document.getElementById('dashStats').innerHTML = `
-                <div class="stat-card" style="background:#fff;">
+                <div class="stat-card">
                     <div class="num">${totalDonors.toLocaleString()}</div>
                     <div class="label text-gray-500">عدد التبرعات</div>
                 </div>
-                <div class="stat-card" style="background:#fff;">
-                    <div class="num">${remaining.toLocaleString()}</div>
-                    <div class="label text-gray-500">عدد الاسهم المتبقية</div>
+                <div class="stat-card">
+                    <div class="num text-red-600">${pendingCount}</div>
+                    <div class="label text-gray-500">تبرعات معلقة</div>
                 </div>
-                <div class="stat-card" style="background:#fff;">
-                    <div class="num">${totalRevenue.toLocaleString()}</div>
-                    <div class="label text-gray-500">المبلغ حتى الان</div>
+                <div class="stat-card">
+                    <div class="num">${remaining.toLocaleString()}</div>
+                    <div class="label text-gray-500">الأسهم المتبقية</div>
+                </div>
+                <div class="stat-card col-span-3">
+                    <div class="num text-gold">${totalRevenue.toLocaleString()} ريال</div>
+                    <div class="label text-gray-500">إجمالي المبلغ المحقق</div>
                 </div>
             `;
         }
@@ -482,26 +541,36 @@
             }
             tbody.innerHTML = data.donations.map((d, i) => {
                 const total = d.items.reduce((s, it) => s + it.qty, 0);
+                const isPending = d.items.some(it => it.status === 'pending');
                 const itemsList = d.items.map(it => `
                     <span class="badge ${it.status === 'completed' ? 'badge-green' : 'badge-gold'} ml-1">
                         ${it.isGift ? '🎁' : '🐑'} ${it.qty}
                     </span>
                 `).join('');
                 return `
-                    <tr>
+                    <tr class="${isPending ? 'bg-yellow-50' : ''}">
                         <td class="font-bold">${d.id}</td>
-                        <td>${d.donor}</td>
+                        <td>
+                            <div class="font-bold">${d.donor}</div>
+                            <div class="text-xs text-gray-400">${d.phone || ''}</div>
+                        </td>
                         <td class="font-bold text-gold">${total}</td>
                         <td>${itemsList}</td>
                         <td class="text-gray-400 text-xs">${d.date}</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="deleteShare(${i})">
-                                حذف
-                            </button>
+                        <td class="flex gap-1">
+                            ${isPending ? `<button class="btn btn-primary btn-sm" onclick="confirmDonation(${i})">تأكيد</button>` : ''}
+                            <button class="btn btn-danger btn-sm" onclick="deleteShare(${i})">حذف</button>
                         </td>
                     </tr>
                 `;
-            }).join('');
+            }).reverse().join('');
+        }
+
+        function confirmDonation(idx) {
+            data.donations[idx].items.forEach(it => it.status = 'completed');
+            saveData();
+            initApp();
+            showToast('✅ تم تأكيد التبرع بنجاح');
         }
 
         // ===== إدارة الأسهم وإضافة التبرع =====
@@ -603,8 +672,7 @@
                 items 
             });
             saveData(); 
-            renderDashboard(); 
-            renderShares(); 
+            initApp();
             closeShareModal(); 
             showToast(`✅ تم إضافة تبرع ${donor}`);
         }
@@ -613,8 +681,7 @@
             if (confirm('حذف التبرع نهائياً؟')) { 
                 data.donations.splice(idx, 1); 
                 saveData(); 
-                renderDashboard(); 
-                renderShares(); 
+                initApp();
                 showToast('تم الحذف بنجاح'); 
             } 
         }
@@ -632,7 +699,7 @@
                 manualShares: { label: 'الأسهم المجمعة يدوياً', icon: 'package', type: 'number' }
             }; 
             
-            document.getElementById('settingsForm').innerHTML = Object.entries(fields).map(([k, f]) => {
+            let html = Object.entries(fields).map(([k, f]) => {
                 return `
                     <div>
                         <label class="font-bold text-deepGreen flex items-center gap-1.5 mb-1 text-xs md:text-sm">
@@ -642,21 +709,31 @@
                         <input type="${f.type}" class="form-input" id="set_${k}" value="${s[k] !== undefined ? s[k] : ''}">
                     </div>
                 `;
-            }).join('') + `
-                <div class="col-span-2 mt-4">
+            }).join('');
+
+            html += `
+                <div class="col-span-2">
+                    <label class="font-bold text-deepGreen flex items-center gap-1.5 mb-1 text-xs md:text-sm">
+                        <i data-lucide="mail" class="w-4 h-4 text-gold"></i>
+                        قالب رسالة الدعوة ({recipient}, {url}, {sender})
+                    </label>
+                    <textarea class="form-input h-24" id="set_inviteTemplate">${s.inviteTemplate || ''}</textarea>
+                </div>
+                <div class="col-span-2 mt-2">
                     <button class="btn btn-primary" onclick="saveSettings()">💾 حفظ الإعدادات</button>
                 </div>
             `;
             
+            document.getElementById('settingsForm').innerHTML = html;
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function saveSettings() { 
-            ['targetShares', 'sharePrice', 'eidDate', 'whatsapp', 'siteUrl', 'manualDonations', 'manualShares'].forEach(k => { 
+            ['targetShares', 'sharePrice', 'eidDate', 'whatsapp', 'siteUrl', 'manualDonations', 'manualShares', 'inviteTemplate'].forEach(k => {
                 data.settings[k] = document.getElementById('set_' + k).value; 
             }); 
             saveData(); 
-            renderDashboard();
+            initApp();
             showToast('تم حفظ الإعدادات بنجاح'); 
         }
 
@@ -675,9 +752,10 @@
                     totalRevenue: totalShares * parseInt(data.settings.sharePrice),
                     totalDonors: data.donations.length
                 },
-                ticker: data.ticker.filter(t => t.active),
-                wallets: [...data.wallets],
-                donations: data.donations
+                ticker: data.ticker,
+                wallets: data.wallets,
+                donations: data.donations,
+                invitations: data.invitations
             }; 
             const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' }); 
             const url = URL.createObjectURL(blob); 
@@ -689,6 +767,75 @@
             document.body.removeChild(a); 
             URL.revokeObjectURL(url); 
             showToast('تم تصدير البيانات بنجاح'); 
+        }
+
+        // --- Ticker Management ---
+        function renderTickerManager() {
+            const container = document.getElementById('tickerList');
+            container.innerHTML = data.ticker.map((t, i) => `
+                <div class="flex items-center gap-2 bg-gray-50 p-2 rounded-lg border border-gray-200">
+                    <input type="text" class="form-input flex-1" value="${t.message}" onchange="updateTicker(${i}, 'message', this.value)">
+                    <input type="text" class="form-input w-24" value="${t.icon}" onchange="updateTicker(${i}, 'icon', this.value)">
+                    <button class="btn ${t.active ? 'btn-primary' : 'btn-danger'} btn-sm" onclick="updateTicker(${i}, 'active', ${!t.active})">
+                        ${t.active ? 'نشط' : 'معطل'}
+                    </button>
+                    <button class="text-red-500 p-1" onclick="deleteTicker(${i})"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+        function addTickerItem() {
+            data.ticker.push({ id: Date.now(), message: 'خبر جديد...', icon: 'star', active: true });
+            saveData(); renderTickerManager();
+        }
+        function updateTicker(idx, key, val) {
+            data.ticker[idx][key] = val; saveData(); renderTickerManager();
+        }
+        function deleteTicker(idx) {
+            data.ticker.splice(idx, 1); saveData(); renderTickerManager();
+        }
+
+        // --- Wallet Management ---
+        function renderWalletManager() {
+            const container = document.getElementById('walletList');
+            container.innerHTML = data.wallets.map((w, i) => `
+                <div class="card p-4 border-gold/30">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" class="form-input col-span-2" placeholder="الاسم" value="${w.name}" onchange="updateWallet(${i}, 'name', this.value)">
+                        <input type="text" class="form-input col-span-2" placeholder="رقم الحساب" value="${w.account}" onchange="updateWallet(${i}, 'account', this.value)">
+                        <input type="text" class="form-input" placeholder="رابط الصورة" value="${w.image || ''}" onchange="updateWallet(${i}, 'image', this.value)">
+                        <input type="text" class="form-input" placeholder="التدرج (gradient)" value="${w.gradient || ''}" onchange="updateWallet(${i}, 'gradient', this.value)">
+                        <input type="number" class="form-input" placeholder="الترتيب" value="${w.sort || 0}" onchange="updateWallet(${i}, 'sort', this.value)">
+                        <button class="btn btn-danger btn-sm" onclick="deleteWallet(${i})">حذف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function addWalletItem() {
+            data.wallets.push({ id: Date.now(), name: 'محفظة جديدة', account: '', sort: data.wallets.length });
+            saveData(); renderWalletManager();
+        }
+        function updateWallet(idx, key, val) {
+            data.wallets[idx][key] = (key === 'sort') ? parseInt(val) : val;
+            saveData(); renderWalletManager();
+        }
+        function deleteWallet(idx) {
+            data.wallets.splice(idx, 1); saveData(); renderWalletManager();
+        }
+
+        // --- Invitations ---
+        function renderInvitations() {
+            const tbody = document.getElementById('invitationsTableBody');
+            const list = data.invitations || [];
+            document.getElementById('invitationCount').textContent = list.length;
+            tbody.innerHTML = list.map(inv => `
+                <tr>
+                    <td>${inv.sender}</td>
+                    <td>${inv.recipient}</td>
+                    <td><span class="badge ${inv.type === 'image' ? 'badge-gold' : 'badge-green'}">${inv.type === 'image' ? 'تصميم' : 'نصي'}</span></td>
+                    <td class="text-xs text-gray-400">${new Date(inv.date).toLocaleString('ar-YE')}</td>
+                </tr>
+            `).reverse().join('');
         }
 
         // ===== مستمعو الأحداث =====
