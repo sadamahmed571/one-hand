@@ -1339,7 +1339,7 @@ body {
     font-size: 0.8rem;
     font-weight: 700;
 }
-
+ .img { z-index: 1001; }
 /* ===== Mobile ===== */
 @media (max-width: 640px) {
     .counter-box .number { font-size: 2.5rem; }
@@ -1680,42 +1680,72 @@ body {
         </div>
     </section>
 
-    <!-- Payment Stories -->
-    <section class="dense-card p-4 reveal">
-	<div class="section-header">
-            <h3 style="font-family: 'Cairo', sans-serif;"><i class="ml-1" data-lucide="heart"></i> حسابات الحملة</h3>
-            <div class="line"></div>
+   <!-- Payment Stories -->
+<section class="dense-card p-4 reveal">
+    <div class="section-header">
+        <h3 style="font-family: 'Cairo', sans-serif;">
+            <i class="ml-1" data-lucide="heart"></i> حسابات الحملة
+        </h3>
+        <div class="line"></div>
+    </div>
+
+    <!-- تم إزالة وسم الإغلاق من هنا ليحتوي العناصر داخله -->
+    <div class="stories-row" id="walletsContainer">
+        
+        <!-- العنصر الأول (تم إضافة وسم البداية ووظيفة النسخ الناقصة) -->
+        <div class="story-item" onclick="copyNumber('3170928457', this)">
+            <div class="story-avatar" style="background: linear-gradient(135deg, #FF9800, #F57C00); padding:0; overflow:hidden;">
+                <!-- يمكنك إضافة مسار صورة الكريمي هنا -->
+                <img src="img/kuraimi.jpg" alt="كريمي أم فلوس" class="w-full h-full rounded-full object-cover img">
+            </div>
+            <span class="story-name"> كريمي أم فلوس </span>
+            <div class="story-number">
+                <span dir="ltr">3170928457</span>
+                <span class="story-copy-icon">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                </span>
+            </div>
         </div>
-        <div class="stories-row" id="walletsContainer"></div>
-                <span class="story-name"> كريمي أم فلوس </span>
-                <div class="story-number">
-                    <span dir="ltr">3170928457</span>
-                    <span class="story-copy-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
-                </div>
+
+        <!-- العنصر الثاني (جيب) -->
+        <div class="story-item" onclick="copyNumber('774261416', this)">
+            <div class="story-avatar" style="background: linear-gradient(135deg, #4CAF50, #2E7D73); padding:0; overflow:hidden;">
+                <img src="img/jeep.jpg" alt="جيب" class="w-full h-full rounded-full object-cover">
             </div>
-            <div class="story-item" onclick="copyNumber('774261416', this)">
-                <div class="story-avatar" style="background: linear-gradient(135deg, #4CAF50, #2E7D73); padding:0; overflow:hidden;">
-                    <img src="img/jeep.jpg" alt="جيب" class="w-full h-full rounded-full object-cover">
-                </div>
-                <span class="story-name">محفظة جيب </span>
-                <div class="story-number">
-                    <span dir="ltr">774261416</span>
-                    <span class="story-copy-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
-                </div>
+            <span class="story-name">محفظة جيب </span>
+            <div class="story-number">
+                <span dir="ltr">774261416</span>
+                <span class="story-copy-icon">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                </span>
             </div>
-            <div class="story-item" onclick="copyNumber('774261416', this)">
-                <div class="story-avatar" style="background: linear-gradient(135deg, #C9A84C, #8B6914); padding:0; overflow:hidden;">
-                    <img src="img/floosk.jpg" alt="فلوسك" class="w-full h-full rounded-full object-cover">
-                </div>
-                <span class="story-name">محفظة فلوسك </span>
-                <div class="story-number">
-                    <span dir="ltr">774261416</span>
-                    <span class="story-copy-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
-                </div>
+        </div>
+
+        <!-- العنصر الثالث (فلوسك) -->
+        <div class="story-item" onclick="copyNumber('774261416', this)">
+            <div class="story-avatar" style="background: linear-gradient(135deg, #C9A84C, #8B6914); padding:0; overflow:hidden;">
+                <img src="img/floosk.jpg" alt="فلوسك" class="w-full h-full rounded-full object-cover">
             </div>
+            <span class="story-name">محفظة فلوسك </span>
+            <div class="story-number">
+                <span dir="ltr">774261416</span>
+                <span class="story-copy-icon">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                </span>
+            </div>
+        </div>
              
-        </div>
-    </section>
+    </div> <!-- الإغلاق الصحيح لحاوية stories-row -->
+</section>
 
     <!-- Quick Form (Toggle Widget) -->
     <section class="quick-form reveal" id="quickFormSection">
